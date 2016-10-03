@@ -224,6 +224,7 @@
 		<property name="userDao" ref="userDao"/>
 	</bean>
 	
+	<!-- spring redis 集成测试 -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxTotal" value="200"/>
 		<property name="maxIdle" value="200"/>
