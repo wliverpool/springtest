@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EB" "http://ibatis.apache.org//dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.pojo.ds1.JoConfigMapper">
+	<resultMap type="com.pojo.ds1.JoConfig" id="JoConfigResultMap">
+		<id property="cfgKey" column="cfg_key" />
+		<result property="cfgValue" column="cfg_value" />
+	</resultMap>
+	
+	<insert id="insertJoConfig" parameterType="com.pojo.ds1.JoConfig">
+	  insert into jo_config(cfg_key,cfg_value) values(#{cfgKey},#{cfgValue})
+	</insert>
+</mapper>

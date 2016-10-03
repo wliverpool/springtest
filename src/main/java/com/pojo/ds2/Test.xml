@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EB" "http://ibatis.apache.org//dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.pojo.ds2.TestMapper">
+	<resultMap type="com.pojo.ds2.Test" id="TestResultMap">
+		<id property="id" column="ID" />
+		<result property="empname" column="EMPNAME" />
+		<result property="userid" column="USERID" />
+		<result property="deptname" column="DEPTNAME" />
+	</resultMap>
+	
+	<insert id="insertTest" parameterType="com.pojo.ds2.Test">
+	  insert into T_TEST(ID,EMPNAME,USERID,DEPTNAME) values(#{id},#{empname},#{userid},#{deptname})
+	</insert>
+</mapper>

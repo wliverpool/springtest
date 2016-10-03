@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>弹出层</title>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+</head>
+<body>
+	<button id="test1">小小提示层</button>
+	<button id="test2">见到你真的很高兴</button>
+	<button id="test3">confirm对话框</button>
+	<button id="test4">弹出html内容</button>
+	<button id="test5">弹出页面</button>
+	<button id="test6">弹出输入</button>
+	<button id="test7">弹出屏蔽父窗口滚动条</button>
+	<button id="test8">设置弹出框位置</button>
+	<button id="test9">alert提示</button>
+	<button id="test10">tip提示</button>
+	<button id="test11">右下角弹出</button>
+	<button id="test12">tab层</button>
+	<button id="test13">load提示框</button>
+	<script>
+		$('#test1').on('click', function() {
+			layer.msg('Hello layer', function() {
+				console.log("关闭之前执行")
+			});
+		});
+		$('#test2').on('click', function() {
+			layer.alert('见到你真的很高兴', {
+				icon : 6
+			});
+		});
+		$('#test3').on('click', function() {
+			//信息框-例2
+			layer.msg('你确定你很帅么？', {
+				time : 0 //不自动关闭
+				,
+				btn : [ '必须啊', '丑到爆' ],
+				yes : function(index) {
+					layer.close(index);
+					layer.msg('雅蠛蝶 O.o', {
+						icon : 6,
+						btn : [ '嗷', '嗷', '嗷' ]
+					});
+				}
+			});
+		});
+		$('#test4').on('click', function() {
+			layer.open({
+				type : 1,
+				title : false,
+				closeBtn : 0,
+				shadeClose : true,
+				skin : 'yourclass',
+				content : '<b>自定义HTML内容</b>'
+			});
+		});
+		$('#test5').on('click', function() {
+			layer.open({
+				type : 2,
+				area : [ '700px', '530px' ],
+				fix : false, //不固定
+				maxmin : true,
+				content : [ 'ImageTrans.html', 'no'//禁用滚动条
+				]
+			});
+		});
+		$('#test6').on('click', function() {
+			layer.prompt(function(val) {
+				layer.msg('得到了' + val);
+			});
+		});
+		$('#test7').on('click', function() {
+			var index = layer.open({
+				title : "标题",
+				scrollbar : false,
+				maxmin : true,//弹出框最大化和最小化按钮
+				type : 2,
+				content : 'http://layim.layui.com'
+			});
+			layer.full(index);
+		});
+		$('#test8').on('click', function() {
+			layer.msg('灵活运用offset', {
+				offset : 0,
+				shift : 6
+			});
+		});
+		$('#test9').on('click', function() {
+			layer.alert('墨绿风格，点击确认看深蓝', {
+				skin : 'layui-layer-molv' //样式类名
+				,
+				closeBtn : 0
+			}, function() {
+				layer.alert('偶吧深蓝style', {
+					skin : 'layui-layer-lan',
+					closeBtn : 0,
+					shift : 4
+				//动画类型
+				});
+			});
+		});
+		$('#test10').on('click', function() {
+			layer.tips('Hi，我是tips', '#test10');
+		});
+		$('#test11').on('click', function() {
+			layer.open({
+				type : 2,
+				title : false,
+				closeBtn : 1, //不显示关闭按钮
+				shade : [ 0 ],
+				area : [ '340px', '215px' ],
+				offset : 'rb', //右下角弹出
+				//time : 2000, //2秒后自动关闭
+				shift : 2,
+				content : [ 'http://www.baidu.com', 'no' ], //iframe的url，no代表不显示滚动条
+				end : function() { //此处用于演示
+					layer.open({
+						type : 2,
+						title : '很多时候，我们想最大化看，比如像这个页面。',
+						shadeClose : true,
+						shade : false,
+						maxmin : true, //开启最大化最小化按钮
+						area : [ '893px', '600px' ],
+						content : 'http://fly.layui.com/'
+					});
+				}
+			});
+		});
+		$('#test12').on('click', function() {
+			layer.tab({
+				area : [ '600px', '300px' ],
+				tab : [ {
+					title : 'TAB1',
+					content : '内容1'
+				}, {
+					title : 'TAB2',
+					content : [ 'http://www.baidu.com' ]
+				}, {
+					title : 'TAB3',
+					content : [ 'ImageTrans.html' ]
+				} ]
+			});
+		});
+		$('#test13').on('click', function() {
+			var ii = layer.load();
+			//此处用setTimeout演示ajax的回调
+			setTimeout(function() {
+				layer.close(ii);
+			}, 1000);
+		});
+	</script>
+</body>
+</html>

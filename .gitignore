@@ -1,0 +1,10 @@
+﻿.bpmn
+.externalToolBuilders
+.settings
+build
+/target/
+.classpath
+.project
+*.epoch
+*.log
+*.lck

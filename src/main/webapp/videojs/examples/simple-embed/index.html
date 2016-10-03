@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HTML5 Video 播放器</title>
+<link href="../../video-js.css" rel="stylesheet">
+<script src="../../ie8/videojs-ie8.min.js"></script>
+<script src="../../video.js"></script>
+<!-- 不要字幕 -->
+<link href="../../alt/video-js-cdn.min.css" rel="stylesheet" />
+<script src="../../alt/video.novtt.min.js"></script>
+</head>
+
+<body>
+	<!-- css：可以直接添加样式。有三种 .vjs-fluid,.vjs-4-3,.vjs-16-9 第一种它会自动计算，后面两种指定比率。 样式也需要设置起始宽高才能显示图片 -->
+	<video id="example_video_1" class="video-js vjs-default-skin vjs-fluid"
+		controls preload="none" width="640" height="264"
+		poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}"> <source
+		src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4"> <source
+		src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">
+	<source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">
+	<track kind="captions" src="../shared/example-captions.vtt"
+		srclang="en" label="English"></track> <!-- Tracks need an ending tag thanks to IE9 -->
+	<track kind="subtitles" src="../shared/example-captions.vtt"
+		srclang="en" label="English"></track> <!-- Tracks need an ending tag thanks to IE9 -->
+	<p class="vjs-no-js">
+		To view this video please enable JavaScript, and consider upgrading to
+		a web browser that <a href="http://videojs.com/html5-video-support/"
+			target="_blank">supports HTML5 video</a>
+	</p></video>
+	<script type="text/javascript">
+		var player = videojs('example_video_1', {
+			fluid : true,
+			autoplay : true
+		}, function() {
+			// if you don't trust autoplay for some reason  
+			console.log('Good to go!');
+			this.play;
+		});
+
+		// 检测播放时间
+		player.on('timeupdate', function() {
+			console.log('当前播放时间：' + player.currentTime());
+		});
+		// 开始或恢复播放
+		player.on('play', function() {
+			console.log('开始/恢复播放');
+		});
+		// 暂停播放
+		player.on('pause', function() {
+			console.log('暂停播放');
+		});
+
+		// 结束播放
+		player.on('ended', function() {
+			console.log('结束播放');
+		});
+		//获取对象：
+		var myPlayer = videojs("example_video_1");
+		//后面那个就是就是video标签的id值，这是myPlayer就是播放器对象了。
+		//播放：
+		myPlayer.play();
+		//暂停：
+		myPlayer.pause();
+		//获取播放进度：
+		var whereYouAt = myPlayer.currentTime();
+		//设置播放进度：
+		myPlayer.currentTime(10);
+		//视频持续时间，加载完成视频才可以知道视频时长，且在flash情况下无效
+		var howLongIsThis = myPlayer.duration();
+		//缓冲，就是返回下载了多少
+		var whatHasBeenBuffered = myPlayer.buffered();
+		//百分比的缓冲
+		var howMuchIsDownloaded = myPlayer.bufferedPercent();
+		//声音大小（0-1之间）
+		var howLoudIsIt = myPlayer.volume();
+		//设置声音大小
+		myPlayer.volume(0.5);
+
+		//取得视频的宽度
+		var howWideIsIt = myPlayer.width();
+
+		//设置宽度：
+		//myPlayer.width(640);
+		//获取高度
+		var howTallIsIt = myPlayer.height();
+		//设置高度：
+		myPlayer.height(480);
+		//错误状态  
+		console.log(myPlayer.error); //null:正常  
+		console.log(myPlayer.error.code); //1.用户终止 2.网络错误 3.解码错误 4.URL无效  
+
+		//网络状态  
+		console.log(myPlayer.currentSrc()); //返回当前资源的URL  
+		//Media.src = value; //返回或设置当前资源的URL  
+		console.log(myPlayer.canPlayType("mp4")); //是否能播放某种格式的资源  
+		console.log(myPlayer.networkState()); //0.此元素未初始化  1.正常但没有使用网络  2.正在下载数据  3.没有找到资源  
+		//Media.load(); //重新加载src指定的资源  
+		//Media.buffered; //返回已缓冲区域，TimeRanges  
+		//Media.preload; //none:不预载 metadata:预载资源信息 auto:  
+
+		//准备状态  
+		console.log(myPlayer.readyState()); //1:HAVE_NOTHING 2:HAVE_METADATA 3.HAVE_CURRENT_DATA 4.HAVE_FUTURE_DATA 5.HAVE_ENOUGH_DATA  
+		console.log(myPlayer.seeking()); //是否正在seeking  
+
+		//回放状态  
+		//myPlayer.currentTime = value; //当前播放的位置，赋值可改变位置  
+		console.log(myPlayer.startTime); //一般为0，如果为流媒体或者不从0开始的资源，则不为0  
+		console.log(myPlayer.duration()); //当前资源长度 流返回无限  
+		console.log(myPlayer.paused()); //是否暂停  
+		//Media.defaultPlaybackRate = value;//默认的回放速度，可以设置  
+		//Media.playbackRate = value;//当前播放速度，设置后马上改变  
+
+		//Media.seekable; //返回可以seek的区域 TimeRanges  
+		console.log(myPlayer.ended()); //是否结束  
+		console.log(myPlayer.autoPlay); //是否自动播放  
+		console.log(myPlayer.loop()); //是否循环播放  
+
+		//控制  
+		console.log(myPlayer.controls());//是否有默认控制条  
+		//Media.volume = value; //音量  
+		//Media.muted = value; //静音  
+		myPlayer.play();
+		var timeRanges = myPlayer.played; //返回已经播放的区域，TimeRanges，关于此对象见下文 
+		//TimeRanges(区域)对象  
+		//console.log(timeRanges.length); //区域段数  
+		//TimeRanges.start(index) //第index段区域的开始位置  
+		//TimeRanges.end(index) //第index段区域的结束位置  
+		//所有事件列表：
+		/*
+		NameDescriptionloadstart开始加载play播放.
+		pause暂停.
+		timeupdateFired when the current playback position has changed. During playback this is fired every 15-250 milliseconds, 
+		depnding on the playback technology in use.就是时间变化吧，与具体的播放技术有关，不同浏览器及格式不同。
+		ended播放结束durationchangeFired when the duration of the media resource is changed, or known for the first time.
+		下载进度变化吧。progress进度变化.resize大小修改.volumechange音量变化.error出错.
+		 */
+	</script>
+</body>
+
+</html>
