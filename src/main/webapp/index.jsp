@@ -23,5 +23,6 @@
 <a href="${pageContext.request.contextPath}/lazyload.jsp">图片懒加载</a><br/>
 <a href="${pageContext.request.contextPath}/alertInfo.html">弹出层</a><br/>
 <a href="${pageContext.request.contextPath}/tabs.jsp">jquery tabs</a>
+<a href="${pageContext.request.contextPath}/qin.html">琴弦文字</a>
 </body>
 </html>
