@@ -266,5 +266,46 @@
 	</bean>
 	  
     <bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
+    
+    <!-- spring mybatis -->
+	<bean id="mybatisDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+		<property name="driverClassName">  
+		    <value>org.gjt.mm.mysql.Driver</value>  
+		</property>  
+		<property name="url">
+	    <value>jdbc:mysql://localhost:3306/world?useUnicode=true&amp;characterEncoding=UTF-8</value>  
+	   	<!--springmybaitis是我的数据库  -->
+	    </property>  
+	    <property name="username">  
+	        <value>root</value>  
+	    </property>  
+	    <property name="password">  
+	        <value>wfmhbbwt</value>  
+	    </property>  
+	</bean>  
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	    <property name="dataSource" ref="mybatisDataSource" />  
+	    <property name="configLocation" value="classpath:spring-mybatis.xml"></property>  
+	</bean>  
+	<bean id="mybatisTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mybatisDataSource" />
+    </bean>
+    <tx:advice id="mybatisTxAdvice" transaction-manager="mybatisTx">  
+	    <tx:attributes>  
+	        <tx:method name="*" propagation="REQUIRED"/>  
+	        <tx:method name="get*" read-only="true"/>  
+	    </tx:attributes>  
+	</tx:advice>  
+	<aop:config proxy-target-class="true">  
+	    <aop:pointcut expression="execution (* com.service.mybatis.*.*(..))" id="mybatisServices"/>  
+	    <aop:advisor advice-ref="mybatisTxAdvice" pointcut-ref="mybatisServices"/>  
+	</aop:config> 
+	<bean id="cityDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.dao.mybatisauto.CityMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean> 
+	<bean id="cityService" class="com.service.mybatis.CityService"> 
+	    <property name="cityMapper" ref="cityDao"></property>
+	</bean> 
 	
 </beans>

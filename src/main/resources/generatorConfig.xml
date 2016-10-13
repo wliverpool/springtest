@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" 
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-<!-- mybatis自动生成代码配置文件 -->
+<!-- mybatis或者ibatis自动生成代码配置文件 -->
 <generatorConfiguration>
 	<classPathEntry 
 		location="C:\Program Files (x86)\apache-maven-3.0.3\repository\mysql\mysql-connector-java\5.1.34\mysql-connector-java-5.1.34.jar" />
+	<!--  targetRuntime="Ibatis2Java5"生成ibatis,targetRuntime="MyBatis3"生成mybatis -->
 	<context id="MysqlTables" targetRuntime="MyBatis3">
+		
+		<!-- 这里引入扩展插件 --> 
+		<!-- 先用maven install命令把maven项目mybatisgenerator.patch安装好再在本项目的pom.xml的mybatis generator插件添加mybatisgenerator.patch项目的依赖 -->  
+    	<plugin type="wfm.mybatisgenerator.plugin.MySQLPaginationPlugin" />
+    	<!--plugin type="wfm.mybatisgenerator.plugin.OraclePaginationPlugin" /-->
+		
 		<commentGenerator>
 			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
 			<property name="suppressAllComments" value="true" />
@@ -21,6 +28,7 @@
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<!-- targetProject:自动生成代码的位置 -->
+		<!-- 生成实体类 -->
 		<javaModelGenerator targetPackage="com.pojo.mybatisauto"
 			targetProject="src\main\java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
@@ -28,20 +36,34 @@
 			<!-- 从数据库返回的值被清理前后的空格 -->
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
+		<!-- 生成SQLMAP文件 -->
 		<sqlMapGenerator targetPackage="com.dao.mybatisauto"
 			targetProject="src\main\java">
-			<property name="enableSubPackages" value="true" />
+			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
+		<!-- 
+			生成Dao文件 
+			targetRuntime="Ibatis2Java5"时配置 type="XMLMAPPER"生成xml的dao实现
+			targetRuntime="MyBatis3"时配置 type="SPRING"生成spring的dao实现 
+		-->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.dao.mybatisautoclient" targetProject="src\main\java">
-			<property name="enableSubPackages" value="true" />
+			targetPackage="com.dao.mybatisauto" targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
 		<table schema="world" tableName="city" domainObjectName="City"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="true">
 			<property name="useActualColumnNames" value="true" />
+			<!-- 指定主键和生成主键规则,identity:自增,sqlStatement:DB2,MySql,SqlServer,Cloudscape,HSQLDB,Derby-->
+			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+		    <!-- 手工指定数据库列于java类中属性的对应 -->
+		    <!--columnOverride column="DATE_FIELD" property="startDate" /-->
+		    <!-- 忽略一列 -->
+		    <!--ignoreColumn column="FRED" /-->
+		    <!-- 手工指定列的数据类型 -->
+		    <!--columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" /-->
 		</table>
 	</context>
 </generatorConfiguration> 
