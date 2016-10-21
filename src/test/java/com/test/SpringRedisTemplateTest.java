@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -21,7 +20,7 @@ import com.pojo.User;
 
 public class SpringRedisTemplateTest {
 
-	private ApplicationContext context;
+	private ClassPathXmlApplicationContext context;
 	private RedisTemplate<Serializable, Serializable> template;
 	private StringRedisTemplate stringTemplate;
 
@@ -42,6 +41,7 @@ public class SpringRedisTemplateTest {
 		for (long i = 0; i < length; i++) {
 			stringTemplate.opsForList().leftPop("queue");
 		}
+		context.close();
 	}
 /*
 	@Test
