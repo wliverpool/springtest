@@ -33,4 +33,6 @@ public interface AbstractRepository {
 	public void createCollection();
 
 	public void dropCollection();
+	
+	public void aggregate();
 }

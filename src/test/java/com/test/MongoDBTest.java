@@ -83,7 +83,7 @@ public class MongoDBTest {
 		MongoCursor<Document> cursor = MongoDBUtil.groupUser();
 		while (cursor.hasNext()) {
 			Document doc  = cursor.next();
-			System.out.println(doc.getString("_id")+","+doc.getInteger("count", 0)+","+doc.getDouble("avg"));
+			System.out.println(doc.getDouble("_id")+","+doc.getInteger("count")+","+doc.getDouble("name"));
 		}
 	}
 

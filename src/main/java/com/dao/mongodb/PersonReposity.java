@@ -1,9 +1,18 @@
 package com.dao.mongodb;
 
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,6 +24,7 @@ import com.mongodb.CommandResult;
 import com.mongodb.WriteResult;
 import com.pojo.mongodb.Book;
 import com.pojo.mongodb.Person;
+import com.pojo.mongodb.PersonAggregationResult;
 
 public class PersonReposity implements AbstractRepository {
 
@@ -118,6 +128,36 @@ public class PersonReposity implements AbstractRepository {
 
 	public CommandResult executeCommand(String jsonCommand) {
 		return getTemplate().executeCommand(jsonCommand);
+	}
+	
+	public void aggregate(){
+		/*
+		 * 基本的操作包括：
+		 * $project - 可以从子文档中提取字段，可以重命名字段。
+	     * $match - 可以实现查找的功能。
+		 * $limit - 接受一个数字n，返回结果集中的前n个文档。
+		 * $skip - 接受一个数字n，丢弃结果集中的前n个文档。
+		 * $group - 统计操作， 还提供了一系列子命令。
+		 * $avg, $sum 等等函数…。
+		 * $sort - 排序。	
+		 * 相当于sql中 select a.loc, count(*) as count from person
+         * as a group by a.loc having count > 2
+		 * mongodb中语法
+		 * $group:根据loc分组，然后统计次数，用$sum函数，显示第一个名称 $project:定义要显示的key,1为显示，0为不显示 $match:过滤掉次数小于2的
+		 *  db.person.aggregate([{"$group":{"_id":"$loc","count":{"$sum":1},"name":{"$first":"$loc"}}},
+		 *  {"$project":{"name":1,"count":1,"_id":0}},{"$match":{"count":{"$gt":2}}}])
+		 */
+		Aggregation agg = newAggregation(
+			group("loc").count().as("count").first("loc").as("name"),
+			project("name","count"),sort(Direction.DESC,"count"),
+			match(Criteria.where("count").gt(2))
+		);
+		
+		AggregationResults<PersonAggregationResult> results = getTemplate().aggregate(agg, "person", PersonAggregationResult.class);
+		List<PersonAggregationResult> tagCount = results.getMappedResults();
+		for(PersonAggregationResult result : tagCount){
+			System.out.println(result.getName()+"\t"+result.getCount());
+		}
 	}
 
 }

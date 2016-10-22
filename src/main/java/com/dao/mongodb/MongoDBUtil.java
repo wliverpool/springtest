@@ -6,11 +6,14 @@ import java.util.Map;
 
 import org.bson.Document;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -270,12 +273,33 @@ public final class MongoDBUtil {
 	}
 	
 	public static MongoCursor<Document> groupUser(){
-		MongoCollection<Document> userCollection = getUserCollection();
-		List<BasicDBObject> all = new ArrayList<BasicDBObject>();
-		//根据age字段求count以及平均值
-		BasicDBObject cond = new BasicDBObject("$group",new BasicDBObject("_id","$age").append("count", new BasicDBObject("$sum",1)).append("avg", new BasicDBObject("$avg","$age")));
-		all.add(cond);
-		return userCollection.aggregate(all).iterator();
+		/*
+		 * 基本的操作包括：
+		 * $project - 可以从子文档中提取字段，可以重命名字段。
+	     * $match - 可以实现查找的功能。
+		 * $limit - 接受一个数字n，返回结果集中的前n个文档。
+		 * $skip - 接受一个数字n，丢弃结果集中的前n个文档。
+		 * $group - 统计操作， 还提供了一系列子命令。
+		 * $avg, $sum 等等函数…。
+		 * $sort - 排序。	
+		 * 相当于sql中 select a.no, count(*) as count from team
+         * as a group by a.no having count > 0
+		 * mongodb中语法
+		 * $group:根据no分组，然后统计次数，用$sum函数，显示第一个名称 $project:定义要显示的key,1为显示，0为不显示 $match:过滤掉次数小于0的
+		 *  db.team.aggregate([{"$group":{"_id":"$no","count":{"$sum":1},"name":{"$first":"$no"}}},
+		 *  {"$project":{"name":1,"count":1,"_id":1}},{"$match":{"count":{"$gt":0}}}]
+		 */
+		List<BasicDBObject> pipeline = new ArrayList<>();
+		BasicDBObject group = new BasicDBObject();
+		group.put("$group", new BasicDBObject("_id","$no").append("count", new BasicDBObject("$sum",1))
+			.append("name", new BasicDBObject("$first","$no"))	
+		);
+		BasicDBObject project = new BasicDBObject();
+		project.put("$project", new BasicDBObject("name",1).append("count", 1).append("_id", 1));
+		pipeline.add(group);
+		pipeline.add(project);
+		AggregateIterable<Document> output = getDatabase().getCollection("team").aggregate(pipeline);
+		return output.iterator();
 	}
 
 	public static void setDatabase(MongoDatabase database) {

@@ -3,6 +3,7 @@ package com.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -10,8 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.dao.mongodb.AbstractRepository;
+import com.dao.mongodb.BatchUpdateOptions;
+import com.dao.mongodb.BatchUpdateUtil;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.pojo.mongodb.Person;
@@ -20,11 +26,13 @@ public class SpringMongoTest {
 
 	private AbstractRepository repository;
 	private ClassPathXmlApplicationContext context;
-
+	private BatchUpdateUtil batchUpdate;
+	
 	@Before
 	public void before() {
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		repository = (AbstractRepository) context.getBean("personRepository");
+		batchUpdate = (BatchUpdateUtil) context.getBean("batchUpdate");
 	}
 
 	@After
@@ -32,32 +40,36 @@ public class SpringMongoTest {
 		context.close();
 	}
 
-	/*@Test
-	public void testInsert() {
-		Person person = new Person("no3", 3, "carragher", "dc");
-		boolean flag = repository.insert(person);
-		assertTrue(flag);
+	/*
+	 * @Test public void testInsert() { Person person = new Person("no13", 13,
+	 * "traore", "dc"); boolean flag = repository.insert(person);
+	 * assertTrue(flag); }
+	 * 
+	 * @Test public void testUpdateSet() { boolean flag =
+	 * repository.updateSet("name", "gerrard", "loc", "mc,amc");
+	 * assertTrue(flag); }
+	 * 
+	 * @Test public void testUpdateInc() { boolean flag =
+	 * repository.updateSet("name", "owen", "no", 5); assertTrue(flag); }
+	 * 
+	 * @Test public void testFindAll() { List<Person> persons =
+	 * repository.findAll(); for (int i = 0; i < persons.size(); i++) {
+	 * System.out.println(persons.get(i)); } assertTrue(persons.size() > 0); }
+	 */
+	
+	@Test
+	public void testAggregation(){
+		repository.aggregate();
 	}
-
+	
 	@Test
-	public void testUpdateSet() {
-		boolean flag = repository.updateSet("name", "gerrard", "loc", "mc,amc");
-		assertTrue(flag);
-	}
-
-	@Test
-	public void testUpdateInc() {
-		boolean flag = repository.updateSet("name", "owen", "no", 5);
-		assertTrue(flag);
-	}*/
-
-	@Test
-	public void testFindAll() {
-		List<Person> persons = repository.findAll();
-		for (int i = 0; i < persons.size(); i++) {
-			System.out.println(persons.get(i));
-		}
-		assertTrue(persons.size() > 0);
+	public void testBatchUpdate(){
+		List<BatchUpdateOptions> list = new ArrayList<>();
+		list.add(new BatchUpdateOptions(Query.query(Criteria.where("no").is(3)),Update.update("no", 23),true,true));
+		list.add(new BatchUpdateOptions(Query.query(Criteria.where("_id").is("no16")),Update.update("name", "hammann"),true,true));
+		int n = batchUpdate.batchUpdate(batchUpdate.getTemplate(), Person.class, list);
+		assertTrue(n>0);
+		System.out.println("受影响行数:"+n);
 	}
 
 	/*

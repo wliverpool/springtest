@@ -331,7 +331,11 @@
 	
 	<bean id="personRepository" class="com.dao.mongodb.PersonReposity">
 		<property name="template" ref="mongoTemplate"/>
-	</bean>			
+	</bean>		
+	
+	<bean id="batchUpdate" class="com.dao.mongodb.BatchUpdateUtil">
+		<property name="template" ref="mongoTemplate"/>
+	</bean>		
 	
 	<context:annotation-config/>
 	
