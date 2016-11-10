@@ -43,8 +43,8 @@
 		</sqlMapGenerator>
 		<!-- 
 			生成Dao文件 
-			targetRuntime="Ibatis2Java5"时配置 type="XMLMAPPER"生成xml的dao实现
-			targetRuntime="MyBatis3"时配置 type="SPRING"生成spring的dao实现 
+			targetRuntime="MyBatis3"时配置 type="XMLMAPPER"生成xml的dao实现
+			targetRuntime="Ibatis2Java5"时配置 type="SPRING"生成spring的dao实现 
 		-->
 		<javaClientGenerator type="XMLMAPPER"
 			targetPackage="com.dao.mybatisauto" targetProject="src\main\java">
