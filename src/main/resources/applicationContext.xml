@@ -294,8 +294,9 @@
     </bean>
     <tx:advice id="mybatisTxAdvice" transaction-manager="mybatisTx">  
 	    <tx:attributes>  
-	        <tx:method name="*" propagation="REQUIRED"/>  
-	        <tx:method name="get*" read-only="true"/>  
+	        <tx:method name="save*" propagation="REQUIRED"/>  
+	        <tx:method name="get*" read-only="true"/>
+	        <tx:method name="tradeOut*" propagation="NEVER"/>  
 	    </tx:attributes>  
 	</tx:advice>  
 	<aop:config proxy-target-class="true">  
@@ -306,8 +307,22 @@
 	    <property name="mapperInterface" value="com.dao.mybatisauto.CityMapper"></property>  
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
 	</bean> 
+	<bean id="orderInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.dao.mybatisauto.OrderInfoMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean>
+	 
+	<bean id="orderApplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.dao.mybatisauto.OrderApplyMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean>
 	<bean id="cityService" class="com.service.mybatis.CityService"> 
 	    <property name="cityMapper" ref="cityDao"></property>
+	</bean> 
+	<bean id="orderService" class="com.service.mybatis.OrderService"> 
+	    <property name="orderInfoMapper" ref="orderInfoDao"></property>
+	    <property name="orderApplyMapper" ref="orderApplyDao"></property>
+	    <property name="ptm" ref="mybatisTx"></property>
 	</bean> 
 	
 	<!-- spring mongodb -->

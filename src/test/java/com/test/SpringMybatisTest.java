@@ -5,26 +5,29 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dao.mybatisauto.CityMapper;
 import com.pojo.mybatisauto.City;
 import com.pojo.mybatisauto.CityExample;
 import com.pojo.mybatisauto.CityExample.Criteria;
+import com.pojo.mybatisauto.OrderInfo;
 import com.service.mybatis.CityService;
+import com.service.mybatis.OrderService;
 
 public class SpringMybatisTest {
 	
 	private ClassPathXmlApplicationContext context;
 	private CityMapper cityMapper;
 	private CityService cityService;
+	private OrderService orderService;
 	
 	@Before
 	public void before(){
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		cityMapper = (CityMapper) context.getBean("cityDao");
 		cityService = (CityService) context.getBean("cityService");
+		orderService = (OrderService) context.getBean("orderService");
 	}
 	
 	@After
@@ -32,7 +35,7 @@ public class SpringMybatisTest {
 		context.close();
 	}
 	
-	/*@Test
+	@Test
 	public void testInsert(){
 		City city = new City();
 		city.setCountryCode("AIA");
@@ -56,7 +59,7 @@ public class SpringMybatisTest {
 		city.setName("1111");
 		city.setPopulation(1);
 		cityService.saveCity(city);
-	}*/
+	}
 	
 	@Test
 	public void testSelectByExample(){
@@ -87,6 +90,28 @@ public class SpringMybatisTest {
 				System.out.println(city.getPopulation());
 			}
 		}
+	}
+	
+	@Test
+	public void testInsertOrder(){
+		OrderInfo info = new OrderInfo();
+		info.setOrderName("测试订单2");
+		info.setOrderStatus("1");
+		orderService.saveOrderInfo(info);
+	}
+	
+	@Test
+	public void testTradeOut1(){
+		OrderInfo info = new OrderInfo();
+		info.setOrderId(1L);
+		orderService.tradeOut1(info);
+	}
+	
+	@Test
+	public void testTradeOut2(){
+		OrderInfo info = new OrderInfo();
+		info.setOrderId(3L);
+		orderService.tradeOut2(info);
 	}
 	
 

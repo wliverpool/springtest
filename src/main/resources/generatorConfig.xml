@@ -51,13 +51,13 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
-		<table schema="world" tableName="city" domainObjectName="City"
+		<table schema="world" tableName="orderapply" domainObjectName="OrderApply"
 			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true">
-			<property name="useActualColumnNames" value="true" />
+			<!--property name="useActualColumnNames" value="true" /-->
 			<!-- 指定主键和生成主键规则,identity:自增,sqlStatement:DB2,MySql,SqlServer,Cloudscape,HSQLDB,Derby-->
-			<generatedKey column="ID" sqlStatement="MySql" identity="true" />
+			<generatedKey column="order_id" sqlStatement="MySql" identity="true" />
 		    <!-- 手工指定数据库列于java类中属性的对应 -->
 		    <!--columnOverride column="DATE_FIELD" property="startDate" /-->
 		    <!-- 忽略一列 -->
