@@ -17,6 +17,7 @@ public class TestConfig {
 		System.out.println(config.jdbcUlr);
 		System.out.println(config.serverId);
 		System.out.println(config.getProperty("server.id"));
+		System.out.println(config.getProperty("memcache.failover"));
 	}
 
 }

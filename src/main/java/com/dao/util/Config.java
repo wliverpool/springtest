@@ -14,7 +14,7 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 // 多个用,号分隔
-@PropertySource(value = { "classpath:app.properties" })
+@PropertySource(value = { "classpath:app.properties","memcache.properties" })
 public class Config {
 	@Value("${gnss.server.url}")
 	public String gnssServerUrl;
