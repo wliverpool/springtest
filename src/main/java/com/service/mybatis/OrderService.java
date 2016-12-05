@@ -4,6 +4,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.dao.mybatisauto.OrderApplyMapper;
 import com.dao.mybatisauto.OrderInfoMapper;
@@ -22,7 +24,16 @@ public class OrderService {
 	private OrderInfoMapper orderInfoMapper;
 	private OrderApplyMapper orderApplyMapper;
 	private PlatformTransactionManager ptm;
+	private TransactionTemplate transactionTemplate;
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	//不使用方法级事务
 	public OrderInfoMapper getOrderInfoMapper() {
 		return orderInfoMapper;
@@ -51,11 +62,54 @@ public class OrderService {
 	public void setOrderApplyMapper(OrderApplyMapper orderApplyMapper) {
 		this.orderApplyMapper = orderApplyMapper;
 	}
+	
+	//使用spring的事务模板完成同样功能的tradeout1
+	public void tradeOut1WithTemplate(OrderInfo info){
+		boolean lockStatus = transactionTemplate.execute(new TransactionCallback<Boolean>() {
+			@Override
+			public Boolean doInTransaction(TransactionStatus status){
+				//此方法中完成事务需要处理的内容
+				//设置更新条件
+				OrderInfoExample condition = new OrderInfoExample();
+				condition.createCriteria().andOrderIdEqualTo(info.getOrderId()).andOrderStatusEqualTo("1");
+				//设置需要更新成什麽状态
+				OrderInfo updateValue = new OrderInfo();
+				updateValue.setOrderStatus("4");
+				int AffectedRows = orderInfoMapper.updateByExampleSelective(updateValue, condition);
+				//根据受影响行数是否等于1判断乐观锁是否加上,只有上锁成功才发起出帐申请
+				return AffectedRows == 1;
+			}
+		});
+		
+		if(lockStatus){
+			//在此处可以访问外部第三方系统
+			System.out.println("====================使用"+info.getOrderId()+"代表的订单信息,访问第三方出帐系统==================");
+			boolean externalSystemSuccess = true;
+			transactionTemplate.execute(new TransactionCallback<Object>() {
+				@Override
+				public Object doInTransaction(TransactionStatus status){
+					//设置更新条件
+					OrderInfoExample condition = new OrderInfoExample();
+					condition.createCriteria().andOrderIdEqualTo(info.getOrderId()).andOrderStatusEqualTo("4");
+					//设置需要更新成什麽状态
+					OrderInfo updateValue = new OrderInfo();
+					if(externalSystemSuccess){
+						//出帐成功
+						updateValue.setOrderStatus("5");
+					}else{
+						//出帐失败
+						updateValue.setOrderStatus("6");
+					}
+					orderInfoMapper.updateByExampleSelective(updateValue, condition);
+					return null;
+				}
+			});
+		}
+	}
 
 	//模拟单张orderInfo发起出帐
 	//不加方法级别事务锁防止出现因为访问第三方系统问题导致本身系统出现长时间数据库锁等待
 	public void tradeOut1(OrderInfo info){
-		
 		//使用乐观锁方法先对订单表更新状态,起到加锁作用,防止因为多次请求导致多次发起出帐的问题		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

@@ -1,3 +1,4 @@
+
 package com.dao.util;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 // 多个用,号分隔
-@PropertySource(value = { "classpath:app.properties","memcache.properties" })
+@PropertySource(value = { "classpath:app.properties" })
 public class Config {
 	@Value("${gnss.server.url}")
 	public String gnssServerUrl;

@@ -86,7 +86,7 @@
     <if test="limitStart != null and limitStart>=0" >
       limit #{limitStart} , #{pageSize}
     </if>
-  </select>
+  </select>  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -103,6 +103,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">  
+    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    insert into city (Name, CountryCode, District, Population)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.name,jdbcType=CHAR}, #{item.countryCode,jdbcType=CHAR}, #{item.district,jdbcType=CHAR}, #{item.population,jdbcType=INTEGER})  
+    </foreach>  
+  </insert> 
   <insert id="insert" parameterType="com.pojo.mybatisauto.City" >
     <selectKey resultType="java.lang.Integer" keyProperty="ID" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -212,4 +223,18 @@
       Population = #{population,jdbcType=INTEGER}
     where ID = #{ID,jdbcType=INTEGER}
   </update>
+  <select id="selectByCustomCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from city
+    <!-- trim灵活的去处多余关键字的标签 -->
+ 	<trim prefix="where" prefixOverrides="and|or">
+ 		<if test="ids!=null">
+ 			and ID in
+ 			<foreach collection="ids" item="id" open="(" close=")" separator=",">
+	 			#{id}
+	 		</foreach> 
+ 		</if>
+ 	</trim>
+  </select>
 </mapper>

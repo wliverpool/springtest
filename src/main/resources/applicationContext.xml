@@ -292,6 +292,10 @@
 	<bean id="mybatisTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="mybatisDataSource" />
     </bean>
+    <!-- mybatis编程式事务模板 -->
+    <bean id="myBatisTTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+    	<property name="transactionManager" ref="mybatisTx"></property>
+    </bean>
     <tx:advice id="mybatisTxAdvice" transaction-manager="mybatisTx">  
 	    <tx:attributes>  
 	        <tx:method name="save*" propagation="REQUIRED"/>  
@@ -311,7 +315,18 @@
 	    <property name="mapperInterface" value="com.dao.mybatisauto.OrderInfoMapper"></property>  
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
 	</bean>
-	 
+	<bean id="clobMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.dao.mybatisauto.MybatisClobMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean> 
+	<bean id="personMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.dao.mybatisauto.PersonMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean> 
+	<bean id="bookBrowserMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.dao.mybatisauto.BookBrowserMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean>
 	<bean id="orderApplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
 	    <property name="mapperInterface" value="com.dao.mybatisauto.OrderApplyMapper"></property>  
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
@@ -323,6 +338,7 @@
 	    <property name="orderInfoMapper" ref="orderInfoDao"></property>
 	    <property name="orderApplyMapper" ref="orderApplyDao"></property>
 	    <property name="ptm" ref="mybatisTx"></property>
+	    <property name="transactionTemplate" ref="myBatisTTemplate"></property>
 	</bean> 
 	
 	<!-- spring mongodb -->
@@ -353,5 +369,11 @@
 	</bean>		
 	
 	<context:annotation-config/>
+	
+	<bean id="cacheService" class="com.service.CacheService"/>
+	
+	<bean id="queryService" class="com.service.QueryService">
+		<property name="cacheService" ref="cacheService"/>
+	</bean>
 
 </beans>

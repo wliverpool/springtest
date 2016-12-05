@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EB" "http://ibatis.apache.org//dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.mybatisauto.PersonMapper">
+	<resultMap type="com.pojo.mybatisauto.Card" id="cardResultMap">
+		<id column="card_id" property="id"/>
+		<result property="info" column="card_info"/>
+	</resultMap>
+	<resultMap type="com.pojo.mybatisauto.Address" id="addressResultMap">
+		<id column="address_id" property="id"/>
+		<result property="address" column="address_name"/>
+	</resultMap>
+	<resultMap type="com.pojo.mybatisauto.Person" id="personResultMap">
+		<id column="person_id" property="id"/>
+		<result column="person_name" property="name"/>
+		<!-- 一对一关系 -->
+		<association property="card" column="person_car_id" javaType="com.pojo.mybatisauto.Card" resultMap="cardResultMap"/>
+		<!-- 一对多关系 -->
+		<collection property="addressList" ofType="com.pojo.mybatisauto.Address" resultMap="addressResultMap"/>
+	</resultMap>
+	<select id="queryAllPerson" resultMap="personResultMap">
+		select 
+		c.card_id as card_id,
+		c.card_info as card_info,
+		p.person_id as person_id,
+		p.person_name as person_name,
+		a.address_id as address_id,
+		a.address_name as address_name
+		from Person p,Address a,Card c
+		where c.card_id=p.person_card_id
+		and p.person_id=a.address_person
+	</select>
+	<select id="queryCardById" parameterType="int" resultMap="cardResultMap">
+		select
+		card_id,
+		card_info
+		from Card
+		where card_id=#{id}
+	</select>
+	<select id="queryAddressByPersonId" parameterType="int" resultMap="addressResultMap">
+		select 
+		address_id,
+		address_name
+		from Address
+		where address_person=#{id}
+	</select>
+</mapper>

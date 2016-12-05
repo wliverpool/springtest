@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EB" "http://ibatis.apache.org//dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.mybatisauto.MybatisClobMapper">
+	<resultMap type="com.pojo.mybatisauto.MybatisClob" id="clobResult">
+		<id column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="bigtype" property="bigType"/>
+	</resultMap>
+	<parameterMap type="com.pojo.mybatisauto.MybatisClob" id="ClobParam">
+		<parameter property="id" jdbcType="INTEGER" javaType="int"/>
+		<parameter property="title" jdbcType="VARCHAR" javaType ="java.lang.String"/>
+		<!-- 如果数据库类型为blob类型:javaType=byte[], jdbcType=BLOB, typeHandler=org.apache.ibatis.type.BlobTypeHandler -->
+		<parameter property="bigType" jdbcType="CLOB" javaType ="java.lang.String" typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+	</parameterMap>
+	<insert id="insertClobTest" keyProperty="id" useGeneratedKeys="true" parameterMap="ClobParam">
+		insert into clobtest (title,bigtype) values (#{title},#{bigType})
+	</insert>
+	<select id="getAllClobTest" resultMap="clobResult">
+		select a.id as id,a.title as title,a.bigtype as bigtype from clobtest a
+	</select>
+	<select id="getClobTestById" resultMap="clobResult" parameterType="int">
+		select a.id as id,a.title as title,a.bigtype as bigtype from clobtest a where a.id=#{id,jdbcType=INTEGER}
+	</select>
+</mapper>

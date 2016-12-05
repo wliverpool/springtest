@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EB" "http://ibatis.apache.org//dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.mybatisauto.BookBrowserMapper">
+
+	<resultMap type="com.pojo.mybatisauto.Book" id="bookResult">
+		<id property="bid" column="id" />
+		<result property="bname" column="bname" />
+		<result property="bprice" column="bprice" />
+	</resultMap>
+	<resultMap type="com.pojo.mybatisauto.Browser" id="browserResult">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+	</resultMap>
+	<parameterMap type="java.util.HashMap" id="bookBrowserParam">
+		<parameter property="bookid" javaType="int" jdbcType="INTEGER"
+			typeHandler="org.apache.ibatis.type.IntegerTypeHandler" />
+		<parameter property="browserid" javaType="int" jdbcType="INTEGER"
+			typeHandler="org.apache.ibatis.type.IntegerTypeHandler" />
+	</parameterMap>
+	<!-- book,browser字段 集 -->
+	<resultMap type="com.pojo.mybatisauto.Browser" id="browserBookResult">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<!-- 多对多 -->
+		<collection property="books" ofType="com.pojo.mybatisauto.Book">
+			<id property="bid" column="bid" />
+			<result property="bname" column="bname" />
+			<result property="bprice" column="bprice" />
+		</collection>
+	</resultMap>
+	<resultMap type="com.pojo.mybatisauto.Book" id="bookBrowserResult">
+		<id property="bid" column="bid" />
+		<result property="bname" column="bname" />
+		<result property="bprice" column="bprice" />
+		<!-- 多对多 -->
+		<collection property="browsers" ofType="com.pojo.mybatisauto.Browser">
+			<id property="id" column="id" />
+			<result property="name" column="name" />
+		</collection>
+	</resultMap>
+
+	<select id="selectBook" parameterType="int" resultMap="bookResult">
+		select id
+		as id,bname as bname,bprice as bprice from Book where id=#{id}
+	</select>
+
+	<select id="selectBrowser" parameterType="int" resultMap="browserResult">
+		select
+		id as id,name as name from Browser where id=#{id}
+	</select>
+
+	<!-- 查询many-to-many -->
+	<select id="selectBrowserBook" parameterType="int" resultMap="browserBookResult">
+		select
+		a.id as id,
+		a.name as name,
+		b.bname as bname,
+		b.bprice as bprice,
+		b.id as bid
+		from Browser a,Book b,bookbrowser c
+		where a.id=c.browserid
+		and b.id=c.bookid and a.id = #{id}
+	</select>
+
+</mapper>
