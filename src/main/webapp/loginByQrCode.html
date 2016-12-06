@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>二维码登录页面</title>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		var uuid;
+		//获取并展示二维码图片
+		jQuery.get("./generateQrCode", function(data, status) {
+			var obj = eval("(" + data + ")");
+			console.log(obj);
+			//存储UUID
+			uuid = obj.uuid;
+			//显示二维码
+			$("#QrCodeImg").attr("src", obj.qrCodeImg);
+			//开始验证登录
+			validateLogin();
+		});
+		function validateLogin() {
+			jQuery.get("./validateLogin?uuid=" + uuid, function(data, status) {
+				if (data == "") {
+					//当没有获取到登录的返回消息时,重复请求
+					validateLogin();
+				} else {
+					console.log("validate:" + data);
+					var obj = eval("(" + data + ")");
+					alert("登录成功了:" + obj.uname);
+					//之后可以进行跳转
+				}
+			});
+		}
+	});
+</script>
+</head>
+<body>
+	<div id="divCon">
+		<img src="" id="QrCodeImg" />
+	</div>
+</body>
+
+
+</html>
