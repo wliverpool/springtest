@@ -16,6 +16,7 @@
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatisspring.version>1.2.2</mybatisspring.version>
 		<jackson.version>2.6.5</jackson.version>
+		<java.home>/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home</java.home>
 	</properties>
 
 	<dependencies>
@@ -321,6 +322,31 @@
 
 	</dependencies>
 
+	<!-- 配置环境 -->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<profiles.active>dev</profiles.active><!--开发环境 -->
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<profiles.active>test</profiles.active><!--测试环境 -->
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<profiles.active>prd</profiles.active><!--生产环境 -->
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
 	<build>
 		<finalName>springtest</finalName>
 		<plugins>
@@ -340,6 +366,10 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<bootclasspath>${java.home}/jre/lib/rt.jar:${java.home}/jre/lib/jce.jar</bootclasspath>
+					</compilerArguments>
 				</configuration>
 			</plugin>
 			<!-- mybatis自动生成代码插件 -->
@@ -360,6 +390,19 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources/${profiles.active}</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>test/*</exclude>
+					<exclude>prd/*</exclude>
+					<exclude>dev/*</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 
 </project>
