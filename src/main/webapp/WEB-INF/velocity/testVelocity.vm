@@ -1,0 +1,17 @@
+$!test
+<br/>
+#if($map.aaa)
+aaa不为空<br/>
+#else
+aaa为空<br/>
+#end
+<br/>
+#if($map.bbb)
+bbb不为空<br/>
+#else
+bbb为空<br/>
+#end
+#foreach($userInfo in $!list)
+	<br/>
+	$!{velocityCount}.	$!userInfo.username 
+#end

@@ -25,6 +25,6 @@
 <a href="${pageContext.request.contextPath}/tabs.jsp">jquery tabs</a><br/>
 <a href="${pageContext.request.contextPath}/qin.html">琴弦文字</a><br/>
 <a href="${pageContext.request.contextPath}/jsjson.html">js处理json</a><br/>
-
+<a href="${pageContext.request.contextPath}/testVelocity">velocity视图</a><br/>
 </body>
 </html>

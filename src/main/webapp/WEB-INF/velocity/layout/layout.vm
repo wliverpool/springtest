@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>velocity布局模版</title>
+</head>
+<body class="warp">
+	布局内容
+	<div class="container">
+		<div class="content">
+			${screen_content}
+		</div>
+	</div>
+		</body>
+</html>

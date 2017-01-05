@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:cache="http://www.springframework.org/schema/cache"
-	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
@@ -16,23 +12,28 @@
 	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
 	http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
 	default-lazy-init="true">
-	
-	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"></bean>
-	<!-- 加载完PropertySourcesPlaceholderConfigurer,可以直接使用${PATH}来获取所在系统的PATH环境变量 -->
-	
-	<mvc:default-servlet-handler/>
-	
-	<mvc:annotation-driven/>
-	<!-- 缓存配置 -->
-	<cache:annotation-driven/>
 
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcacheManager"/>
-	
-	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="classpath:/ehcache.xml"/>
-	
-	<context:component-scan base-package="com"/>
+	<bean
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"></bean>
+	<!-- 加载完PropertySourcesPlaceholderConfigurer,可以直接使用${PATH}来获取所在系统的PATH环境变量 -->
+
+	<mvc:default-servlet-handler />
+
+	<mvc:annotation-driven />
+	<!-- 缓存配置 -->
+	<cache:annotation-driven />
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cache-manager-ref="ehcacheManager" />
+
+	<bean id="ehcacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:/ehcache.xml" />
+
+	<context:component-scan base-package="com" />
 	<!-- JSON转换器 -->
-	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<list>
 				<value>application/json;charset=UTF-8</value>
@@ -40,346 +41,432 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- 自定义文件上传转换器 -->
 	<bean id="multipartResolver" class="com.action.CustomMultipartResolver">
 		<property name="defaultEncoding" value="utf-8" />
 		<property name="maxUploadSize" value="10485760000" />
 		<property name="maxInMemorySize" value="40960" />
 	</bean>
-	<!--bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="utf-8"/>
-		<property name="maxUploadSize" value="10485760000"/>
-		<property name="maxInMemorySize" value="40960"/>
-	</bean-->
-	
+	<!--bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+		<property name="defaultEncoding" value="utf-8"/> <property name="maxUploadSize" 
+		value="10485760000"/> <property name="maxInMemorySize" value="40960"/> </bean -->
+
 	<!-- 异常处理器 -->
- 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-              <props>
-                  <prop key="java.lang.Exception">Exception</prop>
-            </props>
-        </property>
-  </bean>
-
-	<bean id="defaultAnnotationHandlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-
-	<bean id="annotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
-	
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/"/>
-		<property name="suffix" value=".jsp"/>
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">Exception</prop>
+			</props>
+		</property>
 	</bean>
-	
-	
-	
+
+	<bean id="defaultAnnotationHandlerMapping"
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+
+	<bean id="annotationMethodHandlerAdapter"
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+	<!-- org.springframework.web.servlet.view.ResourceBundleViewResolver 用于多个视图集成时,ResourceBundleViewResolver是通过解析资源文件来解析请求输出文件的。 
+		<property name="basename" value="views"></property>,即表示在/WEB-INF/classes路径下有一个 
+		views.properties文件,本例中views.properties的内容为 welcome.(class)=org.springframework.web.servlet.view.velocity.VelocityView 
+		welcome.url=welcome.vm freemarker.(class)=org.springframework.web.servlet.view.freemarker.FreeMarkerView 
+		freemarker.url=freemarker.ftl -->
+	<bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="views"></property>
+		<!-- <property name="order" value="0"></property> -->
+	</bean>
+
+	<!-- velocity视图解析器 -->
+	<!-- 
+	<bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver"> 
+		<property name="cache" value="true"/> 
+		<property name="prefix" value="/"/> 
+		<property name="suffix" value=".vm"/> 
+	</bean> 
+	-->
+	<bean id="velocityViewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+		<property name="cache" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="requestContextAttribute" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".vm"/>
+		<property name="order" value="1"></property>
+		<property name="allowSessionOverride" value="true"></property>
+		<!-- property name="viewNames">
+			<list>
+				<value>*.vm</value>
+				<value>*.htm</value>
+			</list>
+		</property> -->
+		<property name="contentType" value="text/html; charset=UTF-8"></property>
+		<property name="toolboxConfigLocation" value="/WEB-INF/velocity-toolbox.xml"></property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />
+		<property name="layoutUrl" value="layout/layout.vm" />
+	</bean>
+
+	<!-- velocity环境配置 -->
+	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<!-- velocity配置文件路径 -->
+		<property name="configLocation" value="/WEB-INF/velocity.properties" />
+		<!-- velocity模板路径 -->
+		<property name="resourceLoaderPath" value="/WEB-INF/velocity/" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="parser.pool.size">100</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- jsp视图解析器 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+
+
+
 	<!-- 分布式数据库事务开始 -->
 	<!-- Atomikos多数据源 -->
-	<bean id="secondDatabase" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
-	    <property name="uniqueResourceName" value="mysql/b" />
-	    <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
-	    <property name="xaProperties">
-	      <props>
-	        <prop key="user">root</prop>
-	        <prop key="password">wfmhbbwt</prop>
-	        <prop key="URL">jdbc:mysql://localhost:3306/test1?useUnicode=true&amp;characterEncoding=utf-8</prop>
-	      </props>
-	    </property>
-	    <property name="poolSize" value="10" />
-	    <property name="reapTimeout" value="20000" />
-	    <property name="maxLifetime" value="100"/>
+	<bean id="secondDatabase" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+		init-method="init" destroy-method="close">
+		<property name="uniqueResourceName" value="mysql/b" />
+		<property name="xaDataSourceClassName"
+			value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+		<property name="xaProperties">
+			<props>
+				<prop key="user">root</prop>
+				<prop key="password">wfmhbbwt</prop>
+				<prop key="URL">jdbc:mysql://localhost:3306/test1?useUnicode=true&amp;characterEncoding=utf-8
+				</prop>
+			</props>
+		</property>
+		<property name="poolSize" value="10" />
+		<property name="reapTimeout" value="20000" />
+		<property name="maxLifetime" value="100" />
 	</bean>
-	
-	<bean id="firstDatabase" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
-	    <property name="uniqueResourceName" value="mysql/a" />
-	    <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
-	    <property name="xaProperties">
-	      <props>
-	        <prop key="user">root</prop>
-	        <prop key="password">wfmhbbwt</prop>
-	        <prop key="URL">jdbc:mysql://localhost:3306/test2?useUnicode=true&amp;characterEncoding=utf-8</prop>
-	      </props>
-	    </property>
-	    <property name="poolSize" value="10" />
-	    <property name="reapTimeout" value="20000" />
-	    <property name="maxLifetime" value="100"/>
+
+	<bean id="firstDatabase" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+		init-method="init" destroy-method="close">
+		<property name="uniqueResourceName" value="mysql/a" />
+		<property name="xaDataSourceClassName"
+			value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+		<property name="xaProperties">
+			<props>
+				<prop key="user">root</prop>
+				<prop key="password">wfmhbbwt</prop>
+				<prop key="URL">jdbc:mysql://localhost:3306/test2?useUnicode=true&amp;characterEncoding=utf-8
+				</prop>
+			</props>
+		</property>
+		<property name="poolSize" value="10" />
+		<property name="reapTimeout" value="20000" />
+		<property name="maxLifetime" value="100" />
 	</bean>
 	<!-- atomikos事务管理 -->
 	<bean id="atomikosUserTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager">
-	    <description>atomikosUserTransactionManager</description>
-	    <property name="forceShutdown" value="true" />
-	</bean>
-	
-	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
-	    <property name="transactionTimeout" value="300" />
+		<description>atomikosUserTransactionManager</description>
+		<property name="forceShutdown" value="true" />
 	</bean>
 
-  	<bean id="atomikosSpringTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
-    	<property name="transactionManager" ref="atomikosUserTransactionManager"/>
-    	<property name="userTransaction" ref="atomikosUserTransaction"/>
-    	<!-- 必须设置，否则程序出现异常 JtaTransactionManager does not support custom isolation levels by default -->
-        <property name="allowCustomIsolationLevels" value="true"/> 
-  	</bean>
-  	
-  	<bean id="jdbcTemplateA" class="org.springframework.jdbc.core.JdbcTemplate">
-    	<property name="dataSource" ref="firstDatabase"/>
-    </bean>
-    
-    <bean id="jdbcTemplateB" class="org.springframework.jdbc.core.JdbcTemplate">
-    	<property name="dataSource" ref="secondDatabase"/>
-    </bean>
-    
-    <bean id="liveWarmDao" class="com.dao.atomikos.LiveWarmDao">
-    	<property name="jdbcTemplate" ref="jdbcTemplateB"/>
-    </bean>
-  	
-  	<bean id="tmpUserDao" class="com.dao.atomikos.TmpUserDao">
-    	<property name="jdbcTemplate" ref="jdbcTemplateA"/>
-    </bean>
-    
-	<tx:advice id="atomikosTxAdvice" transaction-manager="atomikosSpringTransactionManager">  
-	    <tx:attributes>  
-	        <tx:method name="*" propagation="REQUIRED"/>  
-	        <tx:method name="get*" read-only="true"/>  
-	    </tx:attributes>  
-	</tx:advice>  
-	
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<property name="transactionTimeout" value="300" />
+	</bean>
+
+	<bean id="atomikosSpringTransactionManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager" ref="atomikosUserTransactionManager" />
+		<property name="userTransaction" ref="atomikosUserTransaction" />
+		<!-- 必须设置，否则程序出现异常 JtaTransactionManager does not support custom isolation 
+			levels by default -->
+		<property name="allowCustomIsolationLevels" value="true" />
+	</bean>
+
+	<bean id="jdbcTemplateA" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="firstDatabase" />
+	</bean>
+
+	<bean id="jdbcTemplateB" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="secondDatabase" />
+	</bean>
+
+	<bean id="liveWarmDao" class="com.dao.atomikos.LiveWarmDao">
+		<property name="jdbcTemplate" ref="jdbcTemplateB" />
+	</bean>
+
+	<bean id="tmpUserDao" class="com.dao.atomikos.TmpUserDao">
+		<property name="jdbcTemplate" ref="jdbcTemplateA" />
+	</bean>
+
+	<tx:advice id="atomikosTxAdvice" transaction-manager="atomikosSpringTransactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+			<tx:method name="get*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
 	<aop:aspectj-autoproxy />
-	
-	<aop:config proxy-target-class="true">  
-	    <aop:pointcut expression="execution (* com.service.atomikos.*.*(..))" id="services"/>  
-	    <aop:advisor advice-ref="atomikosTxAdvice" pointcut-ref="services"/>  
-	</aop:config> 
-	
+
+	<aop:config proxy-target-class="true">
+		<aop:pointcut expression="execution (* com.service.atomikos.*.*(..))"
+			id="services" />
+		<aop:advisor advice-ref="atomikosTxAdvice" pointcut-ref="services" />
+	</aop:config>
+
 	<bean id="atomikosService" class="com.service.atomikos.AtomikosService">
-		<property name="tmpUserDao" ref="tmpUserDao"/>
-		<property name="liveWarmDao" ref="liveWarmDao"/>
+		<property name="tmpUserDao" ref="tmpUserDao" />
+		<property name="liveWarmDao" ref="liveWarmDao" />
 	</bean>
 	<!-- 分布式数据库事务结束 -->
-	
+
 	<!-- 读写分离开始 -->
 	<!-- 测试读写分离数据源,写数据源 -->
-	<bean id="masterdataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/test1?characterEncoding=UTF-8&amp;useUnicode=true" />
-        <property name="username" value="root" />
-        <property name="password" value="wfmhbbwt" />
-    </bean>
-	
+	<bean id="masterdataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/test1?characterEncoding=UTF-8&amp;useUnicode=true" />
+		<property name="username" value="root" />
+		<property name="password" value="wfmhbbwt" />
+	</bean>
+
 	<!-- 测试读写分离数据源,读数据源 -->
-    <bean id="slavedataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/test2?characterEncoding=UTF-8&amp;useUnicode=true" />
-        <property name="username" value="root" />
-        <property name="password" value="wfmhbbwt" />
-    </bean>
-    
-    <bean id="dataSource" class="com.dao.util.DynamicDataSource">
-        <property name="targetDataSources">  
-              <map key-type="java.lang.String">  
-                  <!-- write -->
-                 <entry key="master" value-ref="masterdataSource"/>  
-                 <!-- read -->
-                 <entry key="slave" value-ref="slavedataSource"/>  
-              </map>  
-        </property>  
-        <property name="defaultTargetDataSource" ref="masterdataSource"/>  
-    </bean>
-    
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-    
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-    	<property name="dataSource" ref="dataSource"/>
-    </bean>
-    
-    <bean id="userFileDao" class="com.dao.UserFileDao">
-    	<property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
-    
-    <bean id="LiverpoolDao" class="com.dao.LiverpoolDao">
-    	<property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
-    
-    <bean id="LiverpoolService" class="com.service.LiverpoolService">
-    	<property name="lfcDao" ref="LiverpoolDao"/>
-    </bean>
+	<bean id="slavedataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/test2?characterEncoding=UTF-8&amp;useUnicode=true" />
+		<property name="username" value="root" />
+		<property name="password" value="wfmhbbwt" />
+	</bean>
+
+	<bean id="dataSource" class="com.dao.util.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<!-- write -->
+				<entry key="master" value-ref="masterdataSource" />
+				<!-- read -->
+				<entry key="slave" value-ref="slavedataSource" />
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="masterdataSource" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="userFileDao" class="com.dao.UserFileDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="LiverpoolDao" class="com.dao.LiverpoolDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="LiverpoolService" class="com.service.LiverpoolService">
+		<property name="lfcDao" ref="LiverpoolDao" />
+	</bean>
 	<!-- 读写分离结束 -->
-	
+
 	<!-- 系统监控 -->
-	<bean id="monitorService" class="com.service.MonitorServiceImpl"/>
-	
+	<bean id="monitorService" class="com.service.MonitorServiceImpl" />
+
 	<!-- shiro -->
 	<bean id="userDao" class="com.dao.UserDaoImpl">
-		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
-	
-	<bean id="roleDao" class="com.dao.RoleDaoImpl"/>
-	
+
+	<bean id="roleDao" class="com.dao.RoleDaoImpl" />
+
 	<bean id="permissionDao" class="com.dao.PermissionDaoImpl">
-		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
-	
+
 	<bean id="userService" class="com.service.UserServiceImpl">
-		<property name="userDao" ref="userDao"/>
+		<property name="userDao" ref="userDao" />
 	</bean>
-	
+
 	<!-- spring redis 集成测试 -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-		<property name="maxTotal" value="200"/>
-		<property name="maxIdle" value="200"/>
-		<property name="maxWaitMillis" value="0"/>
-		<property name="testOnBorrow" value="true"/>
+		<property name="maxTotal" value="200" />
+		<property name="maxIdle" value="200" />
+		<property name="maxWaitMillis" value="0" />
+		<property name="testOnBorrow" value="true" />
 	</bean>
-	
+
 	<bean id="jedisCluster" class="com.util.JedisClusterFactory">
 		<property name="addressConfig">
 			<value>classpath:redis-cluster.properties</value>
 		</property>
-		<property name="addressKeyPrefix" value="address"/>
-		<property name="timeout" value="30000"/>
-		<property name="maxRedirections" value="6"/>
-		<property name="genericObjectPoolConfig" ref="jedisPoolConfig"/>
+		<property name="addressKeyPrefix" value="address" />
+		<property name="timeout" value="30000" />
+		<property name="maxRedirections" value="6" />
+		<property name="genericObjectPoolConfig" ref="jedisPoolConfig" />
 	</bean>
-	
-	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-		<property name="hostName" value="192.168.122.129"/>
-		<property name="port" value="6379"/>
+
+	<bean id="jedisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="192.168.122.129" />
+		<property name="port" value="6379" />
 		<property name="password" value="liverpool" />
-		<property name="poolConfig" ref="jedisPoolConfig"/>
+		<property name="poolConfig" ref="jedisPoolConfig" />
 	</bean>
-	
-	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">  
-	    <property name="connectionFactory" ref="jedisConnectionFactory" />
-	    <!-- 这个是对key的默认序列化器。默认值是StringSerializer -->  
-	    <property name="keySerializer">  
-	        <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />  
-	    </property>     
-	    <!-- 这个是对value的默认序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer -->
-	    <property name="valueSerializer">  
-	        <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />  
-	    </property>  
-	    <!-- 对hash结构数据的hashkey序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer -->
-	    <property name="hashKeySerializer">    
-	       <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>    
-	    </property>  
-	    <!-- 对hash结构数据的hashvalue序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer -->
-	    <property name="hashValueSerializer">  
-	       <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>    
-	    </property>  
-	    <!-- 开启事务，可以通过transcational注解控制 -->
-	    <property name="enableTransactionSupport" value="true" />
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnectionFactory" />
+		<!-- 这个是对key的默认序列化器。默认值是StringSerializer -->
+		<property name="keySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<!-- 这个是对value的默认序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer -->
+		<property name="valueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		</property>
+		<!-- 对hash结构数据的hashkey序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer -->
+		<property name="hashKeySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<!-- 对hash结构数据的hashvalue序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer -->
+		<property name="hashValueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		</property>
+		<!-- 开启事务，可以通过transcational注解控制 -->
+		<property name="enableTransactionSupport" value="true" />
 	</bean>
-	  
-    <bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
-    
-    <!-- spring mybatis -->
-	<bean id="mybatisDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
-		<property name="driverClassName">  
-		    <value>org.gjt.mm.mysql.Driver</value>  
-		</property>  
+
+	<bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
+		p:connection-factory-ref="jedisConnectionFactory" />
+
+	<!-- spring mybatis -->
+	<bean id="mybatisDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>org.gjt.mm.mysql.Driver</value>
+		</property>
 		<property name="url">
-	    <value>jdbc:mysql://localhost:3306/world?useUnicode=true&amp;characterEncoding=UTF-8</value>  
-	   	<!--springmybaitis是我的数据库  -->
-	    </property>  
-	    <property name="username">  
-	        <value>root</value>  
-	    </property>  
-	    <property name="password">  
-	        <value>wfmhbbwt</value>  
-	    </property>  
-	</bean>  
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-	    <property name="dataSource" ref="mybatisDataSource" />  
-	    <property name="configLocation" value="classpath:spring-mybatis.xml"></property>  
-	</bean>  
-	<bean id="mybatisTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="mybatisDataSource" />
-    </bean>
-    <!-- mybatis编程式事务模板 -->
-    <bean id="myBatisTTemplate" class="org.springframework.transaction.support.TransactionTemplate">
-    	<property name="transactionManager" ref="mybatisTx"></property>
-    </bean>
-    <tx:advice id="mybatisTxAdvice" transaction-manager="mybatisTx">  
-	    <tx:attributes>  
-	        <tx:method name="save*" propagation="REQUIRED"/>  
-	        <tx:method name="get*" read-only="true"/>
-	        <tx:method name="tradeOut*" propagation="NEVER"/>  
-	    </tx:attributes>  
-	</tx:advice>  
-	<aop:config proxy-target-class="true">  
-	    <aop:pointcut expression="execution (* com.service.mybatis.*.*(..))" id="mybatisServices"/>  
-	    <aop:advisor advice-ref="mybatisTxAdvice" pointcut-ref="mybatisServices"/>  
-	</aop:config> 
-	<bean id="cityDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-	    <property name="mapperInterface" value="com.dao.mybatisauto.CityMapper"></property>  
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
-	</bean> 
-	<bean id="orderInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-	    <property name="mapperInterface" value="com.dao.mybatisauto.OrderInfoMapper"></property>  
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+			<value>jdbc:mysql://localhost:3306/world?useUnicode=true&amp;characterEncoding=UTF-8
+			</value>
+			<!--springmybaitis是我的数据库 -->
+		</property>
+		<property name="username">
+			<value>root</value>
+		</property>
+		<property name="password">
+			<value>wfmhbbwt</value>
+		</property>
 	</bean>
-	<bean id="clobMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-	    <property name="mapperInterface" value="com.dao.mybatisauto.MybatisClobMapper"></property>  
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
-	</bean> 
-	<bean id="personMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-	    <property name="mapperInterface" value="com.dao.mybatisauto.PersonMapper"></property>  
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
-	</bean> 
-	<bean id="bookBrowserMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-	    <property name="mapperInterface" value="com.dao.mybatisauto.BookBrowserMapper"></property>  
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="mybatisDataSource" />
+		<property name="configLocation" value="classpath:spring-mybatis.xml"></property>
 	</bean>
-	<bean id="orderApplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-	    <property name="mapperInterface" value="com.dao.mybatisauto.OrderApplyMapper"></property>  
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	<bean id="mybatisTx"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="mybatisDataSource" />
 	</bean>
-	<bean id="cityService" class="com.service.mybatis.CityService"> 
-	    <property name="cityMapper" ref="cityDao"></property>
-	</bean> 
-	<bean id="orderService" class="com.service.mybatis.OrderService"> 
-	    <property name="orderInfoMapper" ref="orderInfoDao"></property>
-	    <property name="orderApplyMapper" ref="orderApplyDao"></property>
-	    <property name="ptm" ref="mybatisTx"></property>
-	    <property name="transactionTemplate" ref="myBatisTTemplate"></property>
-	</bean> 
-	
+	<!-- mybatis编程式事务模板 -->
+	<bean id="myBatisTTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="mybatisTx"></property>
+	</bean>
+	<tx:advice id="mybatisTxAdvice" transaction-manager="mybatisTx">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="tradeOut*" propagation="NEVER" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config proxy-target-class="true">
+		<aop:pointcut expression="execution (* com.service.mybatis.*.*(..))"
+			id="mybatisServices" />
+		<aop:advisor advice-ref="mybatisTxAdvice" pointcut-ref="mybatisServices" />
+	</aop:config>
+	<bean id="cityDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.CityMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="orderInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.OrderInfoMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="clobMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.MybatisClobMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="personMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.PersonMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="bookBrowserMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.BookBrowserMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="orderApplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.OrderApplyMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="cityService" class="com.service.mybatis.CityService">
+		<property name="cityMapper" ref="cityDao"></property>
+	</bean>
+	<bean id="orderService" class="com.service.mybatis.OrderService">
+		<property name="orderInfoMapper" ref="orderInfoDao"></property>
+		<property name="orderApplyMapper" ref="orderApplyDao"></property>
+		<property name="ptm" ref="mybatisTx"></property>
+		<property name="transactionTemplate" ref="myBatisTTemplate"></property>
+	</bean>
+
 	<!-- spring mongodb -->
-	<!-- 
-		配置mongo参数 ,产生的bean的id默认为mongo 
-		主从mongodb的配置host="192.168.122.130" port="27017" credentials="root:root@liverpool"
-		复制集的mongodb配置 credentials="root:wfmhbbwt@liverpool" replica-set="192.168.122.130:27017"
-	-->
-	<mongo:mongo-client id="mongo" credentials="root:wfmhbbwt@admin" replica-set="192.168.122.130:27020">
-		<mongo:client-options connections-per-host="10" read-preference="SECONDARY_PREFERRED" threads-allowed-to-block-for-connection-multiplier="4"
-		connect-timeout="1500" max-wait-time="1500" socket-timeout="1500"
-		socket-keep-alive="true" write-concern="SAFE"/>
+	<!-- 配置mongo参数 ,产生的bean的id默认为mongo 主从mongodb的配置host="192.168.122.130" port="27017" 
+		credentials="root:root@liverpool" 复制集的mongodb配置 credentials="root:wfmhbbwt@liverpool" 
+		replica-set="192.168.122.130:27017" -->
+	<mongo:mongo-client id="mongo" credentials="root:wfmhbbwt@admin"
+		replica-set="192.168.122.130:27020">
+		<mongo:client-options connections-per-host="10"
+			read-preference="SECONDARY_PREFERRED"
+			threads-allowed-to-block-for-connection-multiplier="4"
+			connect-timeout="1500" max-wait-time="1500" socket-timeout="1500"
+			socket-keep-alive="true" write-concern="SAFE" />
 	</mongo:mongo-client>
-	
+
 	<!-- 配置mongofactory ,产生的bean的id默认为mongoDbFactory -->
-	<mongo:db-factory id="mongoDbFactory" dbname="liverpool" mongo-ref="mongo"/>
-	
+	<mongo:db-factory id="mongoDbFactory" dbname="liverpool"
+		mongo-ref="mongo" />
+
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-	</bean>		
-	
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+
 	<bean id="personRepository" class="com.dao.mongodb.PersonReposity">
-		<property name="template" ref="mongoTemplate"/>
-	</bean>		
-	
+		<property name="template" ref="mongoTemplate" />
+	</bean>
+
 	<bean id="batchUpdate" class="com.dao.mongodb.BatchUpdateUtil">
-		<property name="template" ref="mongoTemplate"/>
-	</bean>		
-	
-	<context:annotation-config/>
-	
-	<bean id="cacheService" class="com.service.CacheService"/>
-	
+		<property name="template" ref="mongoTemplate" />
+	</bean>
+
+	<context:annotation-config />
+
+	<bean id="cacheService" class="com.service.CacheService" />
+
 	<bean id="queryService" class="com.service.QueryService">
-		<property name="cacheService" ref="cacheService"/>
+		<property name="cacheService" ref="cacheService" />
 	</bean>
 
 </beans>
