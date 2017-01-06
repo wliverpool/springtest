@@ -1,0 +1,8 @@
+##velocity自定义小函数
+#macro(getRequestBase)
+#if($request.contextPath!="")$request.contextPath#end
+#end
+
+#macro(getJsPath $jsPath)#getRequestBase()/js/$jsPath#end
+#macro(getCssPath $cssPath)#getRequestBase()/css/$cssPath#end
+#macro(getImgPath $imgPath)#getRequestBase()/images/$imgPath#end

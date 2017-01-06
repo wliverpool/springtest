@@ -26,5 +26,6 @@
 <a href="${pageContext.request.contextPath}/qin.html">琴弦文字</a><br/>
 <a href="${pageContext.request.contextPath}/jsjson.html">js处理json</a><br/>
 <a href="${pageContext.request.contextPath}/testVelocity">velocity视图</a><br/>
+<a href="${pageContext.request.contextPath}/generateHtml">velocity视图生成html文件</a><br/>
 </body>
 </html>
