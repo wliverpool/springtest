@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<toolbox>	
+<toolbox>
 	<tool>
 		<key>dateTool</key>
 		<scope>request</scope>
 		<class>org.apache.velocity.tools.generic.DateTool</class>
+	</tool>
+	<tool>
+		<key>math</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.MathTool</class>
+	</tool>
+	<tool>
+		<key>selfNumber</key>
+		<scope>application</scope>
+		<class>com.util.SelfNumberTool</class>
 	</tool>
 </toolbox>

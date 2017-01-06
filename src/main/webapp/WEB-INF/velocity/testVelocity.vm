@@ -1,17 +1,61 @@
 $!test
 <br/>
+不对内容解析： #[[$!test]]#
+<br/>
+获取session:$session.getAttribute("IsSave")
+显示上下文路径:${request.contextPath},请求url:${request.requestURL}
+<br/>
+调用对象的方法：$map.size();
+<br/>
+#set($info = "$map.size()")
+执行字符串：#evaluate($info)
+<br/>
+整数比较
+#set($intString = "039")
+#set($Integer = 0)
+#if($Integer.parseInt($intString)>10)
+intString>10<br/>
+#else
+intString<10<br/>
+#end
+<br/>
+#set($doubleValue = $math.toDouble("1234.547") )
+自定义工具栏使用：$selfNumber.toFixedNumber($doubleValue) 
+##  注释 
+#* 注释2  *#
+<br/>
 #if($map.aaa)
 aaa不为空<br/>
 #else
 aaa为空<br/>
 #end
 <br/>
+
 #if($map.bbb)
 bbb不为空<br/>
 #else
 bbb为空<br/>
 #end
+
+#if($map.aaa=="1111")
+aaa=="1111"<br/>
+#else
+aaa!="1111"<br/>
+#end
+
+#if ($null.isNull($list) || $list.size()==0) 
+list集合为空<br/>
+#else
+list集合不为空<br/>
+#end
+
 #foreach($userInfo in $!list)
 	<br/>
 	$!{velocityCount}.	$!userInfo.username 
 #end
+<br/>
+include包含<br/>
+#include("welcome.vm")
+<br/>
+parse包含<br/>
+#parse("./welcome.vm")

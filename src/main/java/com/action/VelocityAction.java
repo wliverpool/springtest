@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +17,7 @@ import com.pojo.User;
 public class VelocityAction {
 
 	@RequestMapping(value = "/testVelocity")
-	public ModelAndView helloVm() {
+	public ModelAndView helloVm(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("testVelocity");
 		modelAndView.addObject("test", "hello , this is velocity!");
@@ -34,6 +36,7 @@ public class VelocityAction {
 		Map<String, Object> map = new HashMap<>();
 		map.put("aaa", "1111");
 		modelAndView.addObject("map", map);
+		request.getSession().setAttribute("IsSave","yes");
 		return modelAndView;
 	}
 

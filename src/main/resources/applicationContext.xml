@@ -90,6 +90,7 @@
 		class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
 		<property name="cache" value="true" />
 		<property name="exposeSpringMacroHelpers" value="true" />
+		<!-- 在velocity中可以使用request和session -->
 		<property name="requestContextAttribute" value="true" />
 		<property name="exposeSessionAttributes" value="true" />
 		<property name="prefix" value="/"></property>
