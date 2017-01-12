@@ -7,6 +7,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.util.CannotContainSpaces;
+
 /**
  * hibernate-validate应用
  * @author 吴福明
@@ -47,6 +49,18 @@ public class TestPojo {
 	@NotEmpty(message="手机号不能为空")
 	@Pattern(regexp="^1[34578]\\d{9}$",message="手机格式不正确")
 	private String phone;
+	
+	//使用自定义验证器
+	@CannotContainSpaces
+	private String address;
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public String getUserName() {
 		return userName;

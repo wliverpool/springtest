@@ -27,6 +27,6 @@
 <a href="${pageContext.request.contextPath}/jsjson.html">js处理json</a><br/>
 <a href="${pageContext.request.contextPath}/testVelocity">velocity视图</a><br/>
 <a href="${pageContext.request.contextPath}/generateHtml">velocity视图生成html文件</a><br/>
-<a href="${pageContext.request.contextPath}/dataTypeConvert?birthday=2017-06-23&age=16&userName=dsfsafasdfasd34234&phone=13916445646&score=90">数据类型转换和验证</a><br/>
+<a href="${pageContext.request.contextPath}/dataTypeConvert?birthday=2017-06-23&age=16&userName=fa234&phone=13916445646&score=90&address=tesetttt">数据类型转换和验证</a><br/>
 </body>
 </html>
