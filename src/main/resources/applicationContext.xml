@@ -32,7 +32,20 @@
 
 	<mvc:default-servlet-handler />
 	<!-- 扫描注解并注册验证器 -->
-	<mvc:annotation-driven validator="myValidator"/>
+	<mvc:annotation-driven validator="myValidator">
+		<mvc:message-converters register-defaults="true">
+			<!-- JSON转换器 -->
+			<bean id="mappingJacksonHttpMessageConverter"
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 	<!-- 缓存配置 -->
 	<cache:annotation-driven />
 
@@ -44,16 +57,7 @@
 		p:configLocation="classpath:/ehcache.xml" />
 
 	<context:component-scan base-package="com" />
-	<!-- JSON转换器 -->
-	<bean id="mappingJacksonHttpMessageConverter"
-		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-		<property name="supportedMediaTypes">
-			<list>
-				<value>application/json;charset=UTF-8</value>
-				<value>text/html;charset=UTF-8</value>
-			</list>
-		</property>
-	</bean>
+	
 
 	<!-- 自定义文件上传转换器 -->
 	<bean id="multipartResolver" class="com.action.CustomMultipartResolver">
@@ -302,7 +306,17 @@
 		<property name="lfcDao" ref="LiverpoolDao" />
 	</bean>
 	<!-- 读写分离结束 -->
-
+	
+	<!-- 试用gridManager开始 -->
+	<bean id="qaReaderDao" class="com.dao.QaReaderDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	
+	<bean id="qaReaderService" class="com.service.QaReaderService">
+		<property name="qaReaderDao" ref="qaReaderDao" />
+	</bean>
+	<!-- 试用gridManager结束 -->
+	
 	<!-- 系统监控 -->
 	<bean id="monitorService" class="com.service.MonitorServiceImpl" />
 
