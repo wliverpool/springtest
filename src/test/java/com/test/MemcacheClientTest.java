@@ -76,7 +76,7 @@ public class MemcacheClientTest {
 		//MemcachedUtils.set(key,value,new Date(System.currentTimeMillis()+5000)) 
 		//设置为50秒过期它,会以服务端的时间为准，也就是说如果本地客户端的时间跟服务端的时间有差值，这个值就会出现问题。
 		Calendar time = Calendar.getInstance();
-		time.add(Calendar.SECOND, 10);
+		time.add(Calendar.SECOND, 60);
 		MemcachedUtils.set("set2", "调用MemcachedUtils的set方法设置过期时间",time.getTime());
 		assertEquals("调用MemcachedUtils的set方法设置过期时间", MemcachedUtils.get("set2"));
 		Thread.sleep(60*1000);
@@ -92,7 +92,7 @@ public class MemcacheClientTest {
 	@Test
 	public void testAddExpire()throws Exception{
 		Calendar time = Calendar.getInstance();
-		time.add(Calendar.SECOND, 10);
+		time.add(Calendar.SECOND, 60);
 		MemcachedUtils.add("add2", "调用MemcachedUtils的add方法设置过期时间",time.getTime());
 		assertEquals("调用MemcachedUtils的add方法设置过期时间", MemcachedUtils.get("add2"));
 		Thread.sleep(60*1000);

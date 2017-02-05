@@ -29,5 +29,6 @@
 <a href="${pageContext.request.contextPath}/generateHtml">velocity视图生成html文件</a><br/>
 <a href="${pageContext.request.contextPath}/dataTypeConvert?birthday=2017-06-23&age=16&userName=fa234&phone=13916445646&score=90&address=tesetttt">数据类型转换和验证</a><br/>
 <a href="${pageContext.request.contextPath}/gridManager.html">gridManager插件</a><br/>
+<a href="${pageContext.request.contextPath}/seckill/list">简单秒杀</a><br/>
 </body>
 </html>

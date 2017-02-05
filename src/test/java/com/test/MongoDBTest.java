@@ -17,15 +17,15 @@ import com.pojo.mongodb.User;
 public class MongoDBTest {
 
 	public static void main(String[] args) {
-
-		MongoClientURI uri = new MongoClientURI("mongodb://root:root@192.168.122.130:27017/admin");
+		//mongodb://root:root@192.168.122.130:27017/admin
+		MongoClientURI uri = new MongoClientURI("mongodb://192.168.3.12:40000/admin");
 		MongoClient client = new MongoClient(uri);
 		MongoDatabase db = client.getDatabase("liverpool");
-		MongoCollection<Document> col = db.getCollection("data");
+		MongoCollection<Document> col = db.getCollection("person");
 		BasicDBObject cond = new BasicDBObject();
 		//分页
-		cond.put("age", new BasicDBObject("$gt", 1).append("$lte",3));
-		MongoCursor<Document> cursor = col.find(cond).skip(10).limit(10).iterator();
+		cond.put("no", new BasicDBObject("$gt", 1).append("$lte",23));
+		MongoCursor<Document> cursor = col.find(cond).skip(0).limit(10).iterator();
 		while (cursor.hasNext()) {
 			System.out.println(cursor.next());
 		}

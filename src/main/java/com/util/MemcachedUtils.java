@@ -27,7 +27,7 @@ public class MemcachedUtils {
 		//配置memcached
 		SockIOPool sockIOPool = SockIOPool.getInstance();
 		//memcached服务器地址
-		sockIOPool.setServers(new String[]{"192.168.122.137:11211"});
+		sockIOPool.setServers(new String[]{"192.168.3.12:11211"});
 		//memcached服务器权重
 		sockIOPool.setWeights(new Integer[]{3});
 		//当一个memcached服务器失效时是否链接服务器地址中其他memcached服务器

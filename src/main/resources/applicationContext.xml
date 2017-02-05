@@ -355,7 +355,7 @@
 
 	<bean id="jedisConnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-		<property name="hostName" value="192.168.122.129" />
+		<property name="hostName" value="192.168.3.12" />
 		<property name="port" value="6379" />
 		<property name="password" value="liverpool" />
 		<property name="poolConfig" ref="jedisPoolConfig" />
@@ -385,6 +385,10 @@
 		</property>
 		<!-- 开启事务，可以通过transcational注解控制 -->
 		<property name="enableTransactionSupport" value="true" />
+	</bean>
+	
+	<bean id="redisDao" class="com.dao.redis.RedisDao">
+		<property name="stringTemplate" ref="redisStringTemplate"></property>
 	</bean>
 
 	<bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
@@ -466,13 +470,27 @@
 		<property name="ptm" ref="mybatisTx"></property>
 		<property name="transactionTemplate" ref="myBatisTTemplate"></property>
 	</bean>
+	<bean id="seckillMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.SeckillMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="successkilledMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dao.mybatisauto.SuccessKilledMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="secKillService" class="com.service.mybatis.SecKillService">
+		<property name="successKilledMapper" ref="successkilledMapper"></property>
+		<property name="seckillMapper" ref="seckillMapper"></property>
+		<property name="redisDao" ref="redisDao"></property>
+	</bean>
 
 	<!-- spring mongodb -->
 	<!-- 配置mongo参数 ,产生的bean的id默认为mongo 主从mongodb的配置host="192.168.122.130" port="27017" 
 		credentials="root:root@liverpool" 复制集的mongodb配置 credentials="root:wfmhbbwt@liverpool" 
 		replica-set="192.168.122.130:27017" -->
-	<mongo:mongo-client id="mongo" credentials="root:wfmhbbwt@admin"
-		replica-set="192.168.122.130:27020">
+	<!-- credentials="root:wfmhbbwt@admin" -->
+	<mongo:mongo-client id="mongo" 
+		replica-set="192.168.3.12:40000">
 		<mongo:client-options connections-per-host="10"
 			read-preference="SECONDARY_PREFERRED"
 			threads-allowed-to-block-for-connection-multiplier="4"
