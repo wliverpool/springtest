@@ -18,11 +18,14 @@ import com.dao.redis.RedisDao;
 import com.excption.SecKillException;
 import com.excption.SeckillCloseException;
 import com.excption.SeckillRepeatException;
+import com.pojo.SecKillResult;
 import com.pojo.SeckillVo;
 import com.pojo.mybatisauto.Seckill;
 import com.pojo.mybatisauto.SeckillExample;
 import com.pojo.mybatisauto.SuccessKilled;
 import com.service.LoadCallBack;
+
+import net.sf.json.JSONObject;
 
 public class SecKillService {
 	
@@ -32,7 +35,7 @@ public class SecKillService {
 	private SuccessKilledMapper successKilledMapper;
 	private final String salt = "wfmhbbwt";
 	private RedisDao redisDao;
-	
+
 	public RedisDao getRedisDao() {
 		return redisDao;
 	}
@@ -74,6 +77,12 @@ public class SecKillService {
 				return seckillMapper.selectByPrimaryKey(secKillId);
 			}
 		});
+		String leftNumber = redisDao.getObject("miaosha_"+secKillId+"_num", -1, new TypeReference<String>(){}, new LoadCallBack<String>() {
+			@Override
+			public String load(){
+				return String.valueOf(seckill.getNumber());
+			}
+		});
 		//Seckill seckill = seckillMapper.selectByPrimaryKey(secKillId);
 		return seckill;
 	}
@@ -104,6 +113,37 @@ public class SecKillService {
 		String md5 = getMD5(seckill.getSeckillId());
 		seckillVo.setMd5Url(md5);
 		return seckillVo;
+	}
+	
+	public boolean saveSeckillByRedis(long secKillId,String userPhone,String md5)throws SeckillCloseException,SeckillRepeatException,SecKillException{
+		if(StringUtils.isBlank(md5)||(!md5.equals(getMD5(secKillId)))){
+			throw new SecKillException("秒杀数据错误");
+		}
+		try{
+			String result = redisDao.executeScript("miaosha_" + secKillId + "_num",userPhone,"miaosha" + secKillId);
+			System.out.println(result);
+			JSONObject json = JSONObject.fromObject(result);
+			SecKillResult secKillResult = (SecKillResult)JSONObject.toBean(json, SecKillResult.class);
+			if("1".equals(secKillResult.getResultCode())){
+				return true;
+			}else if("-1".equals(secKillResult.getResultCode())){
+				throw new SeckillRepeatException("重复秒杀");
+			}else if("0".equals(secKillResult.getResultCode())){
+				throw new SeckillCloseException("秒杀已结束");
+			}else if("-2".equals(secKillResult.getResultCode())){
+				throw new SecKillException("秒杀错误");
+			}
+		} catch (SeckillRepeatException e) {
+			logger.error(e.getMessage(),e);
+			throw new SeckillRepeatException(e.getMessage());
+		} catch (SeckillCloseException e) {
+			logger.error(e.getMessage(),e);
+			throw new SeckillCloseException(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new SecKillException(e.getMessage());
+		}
+		return false;
 	}
 	
 	/**

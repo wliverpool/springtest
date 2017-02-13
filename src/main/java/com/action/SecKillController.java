@@ -72,7 +72,8 @@ public class SecKillController {
 		}
 		try {
 			//boolean flag = secKillService.saveSeckill(seckillId, userPhone, md5);
-			boolean flag = secKillService.saveSeckillByProcedure(seckillId, userPhone, md5);
+			//boolean flag = secKillService.saveSeckillByProcedure(seckillId, userPhone, md5);
+			boolean flag = secKillService.saveSeckillByRedis(seckillId, userPhone, md5);
 			result.setSuccess(flag);
 			result.setSecKillId(seckillId);
 			if(flag){
