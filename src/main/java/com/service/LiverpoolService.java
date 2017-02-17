@@ -1,6 +1,7 @@
 package com.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class LiverpoolService {
 		lfcDao.updateNameById(id,name+"三大发生发生地方纳斯达克理发师考虑；地方打算地方吗上的；离开附近；阿喀琉斯觉得法拉开始的解放军卡数据库发牢骚；快递费数码方面打开拉风士大夫健康垃圾上的法律空间地方；考虑撒大家弗兰克撒旦风口浪尖撒旦考虑警方；斯科拉附近啊顺口溜解决考虑；");
 	}
 	
+	@Cacheable(value={"liverpool"},key="#id")
 	@Transactional(readOnly=true)
 	public Team getById(Long id){
 		DynamicDataSourceHolder.setDbType(DynamicDataSourceHolder.DB_TYPE_R);

@@ -1,5 +1,7 @@
 package com.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+
 import com.dao.PermissionDao;
 import com.dao.PermissionDaoImpl;
 import com.pojo.Permission;
@@ -17,6 +19,7 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionDao.createPermission(permission);
     }
 
+    @CacheEvict(value="permission",key="#permissionId")
     public void deletePermission(Long permissionId) {
         permissionDao.deletePermission(permissionId);
     }

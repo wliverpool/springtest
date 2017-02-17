@@ -12,5 +12,13 @@
 	<cache name="cache2" maxElementsInMemory="5000" eternal="false"
 		timeToIdleSeconds="500" timeToLiveSeconds="500" overflowToDisk="true" />
 
+	<cache name="permission" maxElementsInMemory="5000" eternal="false"
+		timeToIdleSeconds="500" timeToLiveSeconds="500" overflowToDisk="true" />
+		
+	<cache name="userFile" maxElementsInMemory="5000" eternal="false"
+		timeToIdleSeconds="500" timeToLiveSeconds="500" overflowToDisk="true" />
+		
+	<cache name="liverpool" maxElementsInMemory="5000" eternal="false"
+		timeToIdleSeconds="500" timeToLiveSeconds="500" overflowToDisk="true" />	
 
 </ehcache>
