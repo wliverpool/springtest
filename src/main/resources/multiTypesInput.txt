@@ -1,0 +1,6 @@
+student,200001,ZhangSan,18,78
+goodsPNH001011000200.1zhangshana2011/12/18 01:12:36
+student,200002,LiSi,19,79
+goodsPNH001022000300.1zhangshanb2011/12/19 01:12:36
+student,200003,WangWu,20,80
+goodsPNH001033000400.1zhangshanc2011/12/20 01:12:36

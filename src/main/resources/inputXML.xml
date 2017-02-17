@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+	<goods>
+		<isin>SN100001</isin>
+		<quantity>1000</quantity>
+		<price>200.20</price>
+		<customer>ZhangSan</customer>
+	</goods>
+</ROOT>

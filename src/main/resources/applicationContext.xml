@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:job="http://www.springframework.org/schema/batch" xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
@@ -10,25 +11,29 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
-	http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
+	http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+	http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
 	default-lazy-init="true">
 
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"></bean>
 	<!-- 加载完PropertySourcesPlaceholderConfigurer,可以直接使用${PATH}来获取所在系统的PATH环境变量 -->
 
-	<!-- 国际化配置 -->    
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basenames">
-            <list>
-                <value>classpath:messages</value>
-            </list>
-        </property>
-        <property name="useCodeAsDefaultMessage" value="true" />
-        <property name="defaultEncoding" value="UTF-8"/>  
-    	<property name="cacheSeconds" value="60"/> 
-    </bean>
+	<!-- 国际化配置 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:messages</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage" value="true" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="60" />
+	</bean>
 
 	<mvc:default-servlet-handler />
 	<!-- 扫描注解并注册验证器 -->
@@ -57,7 +62,7 @@
 		p:configLocation="classpath:/ehcache.xml" />
 
 	<context:component-scan base-package="com" />
-	
+
 
 	<!-- 自定义文件上传转换器 -->
 	<bean id="multipartResolver" class="com.action.CustomMultipartResolver">
@@ -78,9 +83,11 @@
 			</props>
 		</property>
 	</bean>
-	
+
 	<!-- 配置验证器 -->
-	<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" id="myValidator">
+	<bean
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+		id="myValidator">
 		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"></property>
 		<property name="validationMessageSource" ref="messageSource"></property>
 	</bean>
@@ -102,13 +109,9 @@
 	</bean>
 
 	<!-- velocity视图解析器 -->
-	<!-- 
-	<bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver"> 
-		<property name="cache" value="true"/> 
-		<property name="prefix" value="/"/> 
-		<property name="suffix" value=".vm"/> 
-	</bean> 
-	-->
+	<!-- <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver"> 
+		<property name="cache" value="true"/> <property name="prefix" value="/"/> 
+		<property name="suffix" value=".vm"/> </bean> -->
 	<bean id="velocityViewResolver"
 		class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
 		<property name="cache" value="true" />
@@ -117,23 +120,21 @@
 		<property name="requestContextAttribute" value="true" />
 		<property name="exposeSessionAttributes" value="true" />
 		<property name="prefix" value="/"></property>
-		<property name="suffix" value=".vm"/>
+		<property name="suffix" value=".vm" />
 		<property name="order" value="1"></property>
 		<property name="allowSessionOverride" value="true"></property>
-		<!-- property name="viewNames">
-			<list>
-				<value>*.vm</value>
-				<value>*.htm</value>
-			</list>
-		</property> -->
+		<!-- property name="viewNames"> <list> <value>*.vm</value> <value>*.htm</value> 
+			</list> </property> -->
 		<property name="contentType" value="text/html; charset=UTF-8"></property>
 		<property name="toolboxConfigLocation" value="/WEB-INF/velocity-toolbox.xml"></property>
-		<property name="viewClass" value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />
 		<property name="layoutUrl" value="layout/layout.vm" />
 	</bean>
 
 	<!-- velocity环境配置 -->
-	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
 		<!-- velocity配置文件路径 -->
 		<property name="configLocation" value="/WEB-INF/velocity.properties" />
 		<!-- velocity模板路径 -->
@@ -306,17 +307,17 @@
 		<property name="lfcDao" ref="LiverpoolDao" />
 	</bean>
 	<!-- 读写分离结束 -->
-	
+
 	<!-- 试用gridManager开始 -->
 	<bean id="qaReaderDao" class="com.dao.QaReaderDao">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
-	
+
 	<bean id="qaReaderService" class="com.service.QaReaderService">
 		<property name="qaReaderDao" ref="qaReaderDao" />
 	</bean>
 	<!-- 试用gridManager结束 -->
-	
+
 	<!-- 系统监控 -->
 	<bean id="monitorService" class="com.service.MonitorServiceImpl" />
 
@@ -386,7 +387,7 @@
 		<!-- 也可以通过transcational注解控制 -->
 		<property name="enableTransactionSupport" value="false" />
 	</bean>
-	
+
 	<bean id="redisDao" class="com.dao.redis.RedisDao">
 		<property name="stringTemplate" ref="redisStringTemplate"></property>
 		<property name="updateAvailableSavingsCard" ref="updateAvailable"></property>
@@ -395,11 +396,12 @@
 
 	<bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
 		p:connection-factory-ref="jedisConnectionFactory" />
-		
-	<bean id="updateAvailable" class="org.springframework.data.redis.core.script.DefaultRedisScript">
-        <property name="location" value="classpath:lua/updateAvailable.lua"/>
-        <property name="resultType" value="java.lang.String"/>
-    </bean>
+
+	<bean id="updateAvailable"
+		class="org.springframework.data.redis.core.script.DefaultRedisScript">
+		<property name="location" value="classpath:lua/updateAvailable.lua" />
+		<property name="resultType" value="java.lang.String" />
+	</bean>
 
 	<!-- spring mybatis -->
 	<bean id="mybatisDataSource"
@@ -496,8 +498,7 @@
 		credentials="root:root@liverpool" 复制集的mongodb配置 credentials="root:wfmhbbwt@liverpool" 
 		replica-set="192.168.122.130:27017" -->
 	<!-- credentials="root:wfmhbbwt@admin" -->
-	<mongo:mongo-client id="mongo" 
-		replica-set="192.168.3.12:40000">
+	<mongo:mongo-client id="mongo" replica-set="192.168.3.12:40000">
 		<mongo:client-options connections-per-host="10"
 			read-preference="SECONDARY_PREFERRED"
 			threads-allowed-to-block-for-connection-multiplier="4"
@@ -527,6 +528,283 @@
 
 	<bean id="queryService" class="com.service.QueryService">
 		<property name="cacheService" ref="cacheService" />
+	</bean>
+
+	<!-- spring batch -->
+	<!-- 每个Batch都会包含一个Job。Job就像一个容器，这个容器里装了若干Step，例如读取数据，处理数据，然后将这些数据存储起来 (ItemReader用来读取数据，ItemProcessor用来处理数据，ItemWriter用来写数据) 
+		。 JobLauncher用来启动Job，JobRepository是上述处理提供的一种持久化机制，它为JobLauncher，Job，和Step实例提供CRUD操作。 
+		从DB或是文件中取出数据的时候，read()操作每次只读取一条记录，之后将读取的这条数据传递给processor(item)处理，框架将重复做这两步操作， 
+		直到读取记录的件数达到batch配置信息中”commin-interval”设定值的时候，就会调用一次write操作。然后再重复上图的处理，直到处理完所有的数据。 
+		当这个Step的工作完成以后，或是跳到其他Step，或是结束处理。 -->
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="jobTransactionManager" />
+	</bean>
+
+	<bean id="jobTransactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager">
+	</bean>
+
+	<!-- 配置了一个ID为helloWorldJob的job，此job有两个Step ： step_hello和step_world， 前者负责输出“Hello 
+		”，后者负责输出“World!”，当第一个Step完成以后，执行第二个Step。 -->
+	<job:job id="helloWorldJob">
+		<job:step id="step_hello" next="step_world">
+			<job:tasklet ref="hello" transaction-manager="jobTransactionManager"></job:tasklet>
+		</job:step>
+		<job:step id="step_world">
+			<job:tasklet ref="world" transaction-manager="jobTransactionManager"></job:tasklet>
+		</job:step>
+	</job:job>
+
+	<bean id="hello" class="com.job.WriteTasklet">
+		<property name="message" value="Hello "></property>
+	</bean>
+
+	<bean id="world" class="com.job.WriteTasklet">
+		<property name="message" value=" World!"></property>
+	</bean>
+
+	<!-- 操作csv文件的job -->
+	<job:job id="csvJob">
+		<job:step id="csvStep">
+			<job:tasklet transaction-manager="jobTransactionManager">
+				<!-- csv的数据处理过程processor是由自己写的java定义的并通过@Component注解进行标注 -->
+				<job:chunk reader="csvItemReader" writer="csvItemWriter"
+					processor="csvItemProcessor" commit-interval="1" skip-limit="1">
+					<!-- 发生指定异常时job不结束,而是跳过当前记录,skip-limit指定跳过几条 -->
+					<job:skippable-exception-classes>
+						<!-- 允许跳过的异常 -->
+                    	<job:include class="org.springframework.batch.item.file.FlatFileParseException" />
+                    	<!-- 不允许跳过的异常 -->
+                    	<job:exclude class="java.io.FileNotFoundException"/>
+                    </job:skippable-exception-classes>
+				</job:chunk>
+			</job:tasklet>
+		</job:step>
+	</job:job>
+
+	<!-- 读取csv文件 csvItemReader实现的是Spring Batch提供FlatFileItemReader类，此类主要用于Flat文件的读操作。它包含两个必要的属性 
+		resource和 lineMapper。 前者指定要读取的文件的位置，后者是将文件的每一行映射成一个Pojo对象。其中 lineMapper也有两个重要属性 
+		lineTokenizer和 fieldSetMapper， lineTokenizer将文件的一行分解成一个 FieldSet，然后由 fieldSetMapper映射成Pojo对象。 
+		这种方式与DB的读操作非常类似。lineMapper类似于ResultSet，文件中的一行类似于Table中的一条记录，被封装成的FieldSet，类似于RowMapper。 
+		至于怎么将一条记录封装，这个工作由lineTokenizer的继承类DelimitedLineTokenizer完成。DelimitedLineTokenizer的delimiter属性决定文件的一行数据按照什么分解，默认的是“，”， 
+		names属性标示分解的每个字段的名字，传给fieldSetMapper（本实例用的是BeanWrapperFieldSetMapper）的时候，就可以按照这个名字取得相应的值。 
+		fieldSetMapper的属性prototypeBeanName，是映射Pojo类的名字。设置了此属性后，框架就会将lineTokenizer分解成的一个FieldSet映射成Pojo对象， 
+		映射是按照名字来完成的(lineTokenizer分解时标注的名字与Pojo对象中字段的名字对应)。 总之，FlatFileItemReader读取一条记录由以下四步完成：1，从resource指定的文件中读取一条记录；2，lineTokenizer将这条记录按照delimiter分解成Fileset， 
+		每个字段的名字由names属性取得；3，将分解成的Fileset传递给fieldSetMapper，由其按照名字映射成Pojo对象；4，最终由FlatFileItemReader将映射成的Pojo对象返回， 
+		框架将返回的对象传递给Processor。 -->
+	<bean id="csvItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="resource" value="classpath:inputFile.csv" />
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer" ref="lineTokenizer" />
+				<property name="fieldSetMapper">
+					<bean
+						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<!-- 指定转换的pojo -->
+						<property name="prototypeBeanName" value="student"></property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="student" class="com.pojo.Student"></bean>
+
+	<!-- lineTokenizer处理csv格式 -->
+	<bean id="lineTokenizer"
+		class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+		<property name="delimiter" value="," />
+		<property name="names">
+			<list>
+				<value>ID</value>
+				<value>name</value>
+				<value>age</value>
+				<value>score</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 写CSV文件 csvItemWriter实现的是FlatFileItemWriter类。此类与FlatFileItemReader类相似，也有两个重要的属性：resource和lineAggregator。 
+		前者是要输出的文件的路径，后者和lineTokenizer类似。lineAggregator(本实例用DelimitedLineAggregator类)也有两个重要的属性：delimiter和fieldExtractor。 
+		Delimiter标示输出的字段以什么分割，后者将Pojo对象组装成由Pojo对象的字段组成的一个字符串。同样FlatFileItemWriter写一条记录也有以下四步完成： 
+		1，Processor传递过来一个对象给lineAggregator； 2，lineAggregator将其这个对象转化成一个数组； 3，再由lineAggregator的属性fieldExtractor将数组转化成按照delimiter分割一个字符串； 
+		4，将这个字符串输出。 -->
+	<bean id="csvItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="resource" value="file:src/outputFile.csv" />
+		<property name="lineAggregator">
+			<bean
+				class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+				<property name="delimiter" value=","></property>
+				<property name="fieldExtractor">
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="name,age,score"></property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- xml处理的job -->
+	<job:job id="xmlFileReadAndWriterJob">
+		<job:step id="xmlFileReadAndWriterStep">
+			<job:tasklet>
+				<!-- xml的数据处理过程processor是由自己写的java定义的并通过@Component注解进行标注 -->
+				<job:chunk reader="xmlReader" writer="xmlWriter"
+					processor="xmlProcessor" commit-interval="10">
+				</job:chunk>
+			</job:tasklet>
+		</job:step>
+	</job:job>
+
+	<!-- XML文件读取 -->
+	<bean id="xmlReader" class="org.springframework.batch.item.xml.StaxEventItemReader"
+		scope="step">
+		<!-- 指定根节点 -->
+		<property name="fragmentRootElementName" value="goods" />
+		<!-- 解析节点信息，并映射成pojo对象 -->
+		<property name="unmarshaller" ref="tradeMarshaller" />
+		<!-- 根据job的inputFilePath参数获取xml的位置 -->
+		<property name="resource" value="file:#{jobParameters['inputFilePath']}"></property>
+	</bean>
+
+	<!-- XML文件写入 -->
+	<bean id="xmlWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter"
+		scope="step">
+		<property name="rootTagName" value="wanggc" />
+		<property name="marshaller" ref="tradeMarshaller" />
+		<property name="resource" value="file:#{jobParameters['outputFilePath']}" />
+	</bean>
+
+	<bean id="tradeMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="aliases">
+			<util:map id="aliases">
+				<entry key="goods" value="com.pojo.Goods" />
+				<entry key="buyDay" value="java.util.Date"></entry>
+			</util:map>
+		</property>
+	</bean>
+
+	<!-- 列数固定文件读取Job -->
+	<job:job id="fixedLengthJob">
+		<job:step id="fixedLengthStep">
+			<job:tasklet>
+				<!-- 数据处理过程processor是由自己写的java定义的并通过@Component注解进行标注 -->
+				<job:chunk reader="fixedLengthReader" writer="fixedLengthWriter"
+					processor="fixedLengthProcessor" commit-interval="10">
+				</job:chunk>
+			</job:tasklet>
+		</job:step>
+	</job:job>
+
+	<!-- 固定长文件的读信息的配置 -->
+	<bean id="fixedLengthReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="resource" value="file:#{jobParameters['inputFilePath']}" />
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer" ref="filelineTokenizer" />
+				<property name="fieldSetMapper">
+					<bean
+						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="prototypeBeanName" value="studentBean" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="studentBean" class="com.pojo.StudentPojo" scope="prototype" />
+
+	<bean id="filelineTokenizer"
+		class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">
+		<!-- 配置文件列与属性对应 -->
+		<property name="columns" value="1-6,7-15,16-18,19-" />
+		<property name="names" value="ID,name,age,score" />
+	</bean>
+
+	<!-- 固定长格式文件的写 -->
+	<bean id="fixedLengthWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="resource" value="file:#{jobParameters['outputFilePath']}" />
+		<property name="lineAggregator">
+			<bean
+				class="org.springframework.batch.item.file.transform.FormatterLineAggregator">
+				<property name="fieldExtractor">
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="ID,name,age,score" />
+					</bean>
+				</property>
+				<!-- pojo每个属性所占的长度和格式 -->
+				<property name="format" value="%-9s%-20s%3d%-2.0f" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- jdbc数据转换 -->
+	<job:job id="jdbcjob">
+		<job:step id="jdbcStep">
+			<job:tasklet>
+				<!-- 数据处理过程processor是由自己写的java定义的并通过@Component注解进行标注 -->
+				<job:chunk reader="jdbcItemReader" writer="jdbcItemWriter"
+					processor="jdbcProcessor" commit-interval="5">
+				</job:chunk>
+			</job:tasklet>
+		</job:step>
+	</job:job>
+
+	<!-- 从数据库获取数据 -->
+	<bean id="jdbcItemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<!-- 读取的数据源 -->
+		<property name="dataSource" ref="mybatisDataSource" />
+		<!-- 读取数据的sql -->
+		<property name="sql"
+			value="select seckill_id,name,number,start_time,end_time,create_time from seckill where seckill_id &lt; ?" />
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+			<!-- 映射的pojo类型 -->
+				<property name="mappedClass"
+					value="com.pojo.Seckill" />
+			</bean>
+		</property>
+		<property name="preparedStatementSetter" ref="paramStatementSetter" />
+	</bean>
+	
+	<!-- 读取数据时的参数 -->
+	<bean id="paramStatementSetter"
+		class="org.springframework.batch.core.resource.ListPreparedStatementSetter"
+		scope="step">
+		<property name="parameters">
+			<list>
+				<value>#{jobParameters['id']}</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jdbcItemWriter"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+		<!-- 写入的数据源 -->
+		<property name="dataSource" ref="mybatisDataSource" />
+		<!-- 写入表的insert sql -->
+		<property name="sql"
+			value="insert into TargetSeckill (id,name,number,started,ended,created)
+                   values
+                  (:id,:name,:number,:started,:ended,:created)" />
+		<property name="itemSqlParameterSourceProvider">
+			<bean
+				class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+		</property>
 	</bean>
 
 </beans>
