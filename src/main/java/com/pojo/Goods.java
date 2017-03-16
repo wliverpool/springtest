@@ -2,8 +2,8 @@ package com.pojo;
 
 import java.util.Date;
 
-public class Goods {
-
+public class Goods{
+	
 	private String isin;
 	/** 数量 */
 	private int quantity;

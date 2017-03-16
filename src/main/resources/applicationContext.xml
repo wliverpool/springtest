@@ -857,4 +857,35 @@
 		</property>
 	</bean>
 
+	<!-- zookeeper -->
+	<bean id="zkSerializer" class="com.util.ZkUtils.StringSerializer">
+		<constructor-arg value="UTF-8" />
+	</bean>
+
+	<bean id="zkClient" class="org.I0Itec.zkclient.ZkClient">
+		<constructor-arg index="0" value="172.16.48.134:4180,172.16.48.134:4180,172.16.48.134:4180" />
+		<constructor-arg index="1" value="100000" />
+		<property name="zkSerializer" ref="zkSerializer"></property>
+	</bean>
+	
+	<!-- zookeeper配置信息修改监听器 -->
+	<bean id="configChangeSubscriber" class="com.util.ZkConfigChangeSubscriberImpl">
+		<constructor-arg ref="zkClient"></constructor-arg>
+		<constructor-arg value="/llyg/conf"></constructor-arg>
+	</bean>
+	<!-- 配置文件加载工厂，从zookeeper加载配置并实现监听配置信息修改 -->
+	<bean id="helperFactory" class="com.util.DynamicPropertiesHelperFactory">
+		<constructor-arg ref="configChangeSubscriber"></constructor-arg>
+	</bean>
+	<!-- 利用zookeeper分布式锁简单实现 -->
+	<bean id="baseDistributedLock" class="com.lock.BaseDistributedLock">
+		<constructor-arg ref="zkClient"></constructor-arg>
+		<constructor-arg value="/llyg"></constructor-arg>
+		<constructor-arg value="lock"></constructor-arg>
+	</bean>
+	
+	<bean id="simpleDistributedLock" class="com.lock.SimpleDistributedLock">
+		<property name="baseDistributedLock" ref="baseDistributedLock"></property>
+	</bean>
+
 </beans>
