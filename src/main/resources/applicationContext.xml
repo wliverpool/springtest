@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:redis="http://www.springframework.org/schema/redis"
 	xmlns:job="http://www.springframework.org/schema/batch" xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
@@ -14,7 +15,8 @@
 	http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
 	http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis-1.0.xsd"
 	default-lazy-init="true">
 
 	<bean
@@ -439,7 +441,7 @@
 		</property>
 		<!-- 也可以通过transcational注解控制 -->
 		<property name="enableTransactionSupport" value="false" />
-	</bean>
+	</bean>  
 
 	<bean id="redisDao" class="com.dao.redis.RedisDao">
 		<property name="stringTemplate" ref="redisStringTemplate"></property>
@@ -449,6 +451,21 @@
 
 	<bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
 		p:connection-factory-ref="jedisConnectionFactory" />
+
+	<bean id="redisMessageBroadcast" class="com.service.RedisMessageBroadcast">  
+        <property name="template" ref="redisStringTemplate"/>  
+    </bean>
+
+	<bean id="redisMsgListener" class="com.service.RedisMessageListener">  
+        <property name="template" ref="redisStringTemplate"/>  
+    </bean>
+    
+    <redis:listener-container connection-factory="jedisConnectionFactory">
+		<!-- the method attribute can be skipped as the default method name is 
+			"handleMessage" -->
+			<!-- topic代表监听的通道，是一个正规匹配 -->
+		<redis:listener ref="redisMsgListener" method="handleMessage" topic="*" />
+	</redis:listener-container>
 
 	<bean id="updateAvailable"
 		class="org.springframework.data.redis.core.script.DefaultRedisScript">
@@ -890,15 +907,15 @@
 	</bean>
 	
 	<!-- 调用dubbo的服务 -->
-	<dubbo:application name="dubbo_consumer"></dubbo:application>
+	<!-- dubbo:application name="dubbo_consumer"></dubbo:application-->
    	<!-- 使用zookeeper注册中心暴露服务地址 -->  
-   	<dubbo:registry protocol="zookeeper" address="172.16.48.135:4181,172.16.48.135:4180,172.16.48.135:4182" check="false"></dubbo:registry> 
+   	<!--dubbo:registry protocol="zookeeper" address="172.16.48.135:4181,172.16.48.135:4180,172.16.48.135:4182" check="false"></dubbo:registry--> 
     <!-- 要引用的服务 -->  
     <!-- dubbo:reference 的一些属性的说明：
       1）interface调用的服务接口
       2）check 启动时检查提供者是否存在，true报错，false忽略
       3）registry 从指定注册中心注册获取服务列表，在多个注册中心时使用，值为<dubbo:registry>的id属性，多个注册中心ID用逗号分隔
       4）loadbalance 负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用 -->
-   	<dubbo:reference interface="wfm.dubboserver.service.TestService" id="testServiceImpl"/>
+   	<!--dubbo:reference interface="wfm.dubboserver.service.TestService" id="testServiceImpl"/-->
 
 </beans>

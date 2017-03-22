@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,17 +24,20 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
 import com.pojo.User;
+import com.service.RedisMessageBroadcast;
 
 public class SpringRedisTemplateTest {
 
 	private ClassPathXmlApplicationContext context;
 	private RedisTemplate<Serializable, Serializable> template;
 	private StringRedisTemplate stringTemplate;
+	private RedisMessageBroadcast redisMessageBroadcast;
 
 	@Before
 	public void before() throws Exception {
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		template = (RedisTemplate<Serializable, Serializable>) context.getBean("redisTemplate");
+		redisMessageBroadcast = (RedisMessageBroadcast) context.getBean("redisMessageBroadcast");
 		stringTemplate = (StringRedisTemplate) context.getBean("redisStringTemplate");
 		for (int i = 0; i < 10; i++) {
 			String uid = "u" + i;
@@ -300,6 +304,23 @@ public class SpringRedisTemplateTest {
 		long end = System.currentTimeMillis();
 		System.out.println("total time:" + (end-start));
 		//total time:2526
+	}
+	
+	@Test
+	public void testRedisPub(){
+		User user = new User();
+		user.setId(1L);
+		user.setLocked(false);
+		user.setPassword("adsfasfda");
+		user.setUsername("test");
+		user.setSalt("dasdfdas");
+		boolean flag = redisMessageBroadcast.sendRedisBroadcastMessage(user);
+		assertTrue(flag);
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
