@@ -32,5 +32,6 @@
 <a href="${pageContext.request.contextPath}/seckill/list">简单秒杀</a><br/>
 <a href="${pageContext.request.contextPath}/ajaxAccessCrossDomain.html">测试ajax跨域访问</a><br/>
 <a href="${pageContext.request.contextPath}/multi/toForm">重复提交</a><br/>
+<a href="${pageContext.request.contextPath}/dubboTest/add?paramTest=2222">测试dubbo服务</a><br/>
 </body>
 </html>
