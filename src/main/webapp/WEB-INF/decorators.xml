@@ -6,7 +6,14 @@
 <decorators defaultdir="/WEB-INF/sitemesh/">  
 	<!-- page装饰页面文件名,name装饰器名 -->
     <decorator name="main" page="basic.jsp">
-		<pattern>*</pattern>
+		<pattern>/*</pattern>
 	</decorator>
 	<decorator name="printable" page="printable.jsp"/>
+	<excludes>
+		<!-- 排除chart目录下的所有action请求 -->
+		<pattern>/chart/*.*</pattern>
+		<!-- //排除根目录下的remote_requst.action包括带参数的请求,如果action后面不带*则只能排除不带参数的请求 -->
+		<!-- pattern>/remote_requst.action*</pattern -->
+		<pattern>/swagger-ui.html*</pattern>
+	</excludes>
 </decorators>  

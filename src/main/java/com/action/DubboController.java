@@ -15,7 +15,7 @@ import wfm.dubboserver.service.TestService;
 @RequestMapping("/dubboTest/")
 public class DubboController {
 	
-	@Autowired
+	//@Autowired
 	private TestService dubboTestService;
 	
 	@RequestMapping("add")

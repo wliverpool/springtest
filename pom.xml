@@ -389,11 +389,11 @@
 			<artifactId>spring-data-redis</artifactId>
 			<version>1.8.0.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-dbcp2</artifactId>
-		    <version>2.1.1</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 
 		<dependency>
@@ -402,7 +402,7 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.101tec</groupId>
 			<artifactId>zkclient</artifactId>
@@ -442,18 +442,18 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>wfm</groupId>
 			<artifactId>dubboserver</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.5.3</version>
-            <exclusions>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.3</version>
+			<exclusions>
 				<exclusion>
 					<artifactId>spring</artifactId>
 					<groupId>org.springframework</groupId>
@@ -463,7 +463,26 @@
 					<artifactId>netty</artifactId>
 				</exclusion>
 			</exclusions>
-        </dependency>
+		</dependency>
+
+		<!-- 自动生产接口api -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml</groupId>
+			<artifactId>classmate</artifactId>
+			<version>1.3.1</version>
+		</dependency>
 
 	</dependencies>
 
