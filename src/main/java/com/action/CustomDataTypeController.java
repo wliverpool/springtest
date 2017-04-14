@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pojo.TestPojo;
 import com.util.DateEditor;
+import com.util.ValidateResult;
+import com.util.ValidationUtils;
 
 @Controller
 @RequestMapping("/")
@@ -26,9 +28,20 @@ public class CustomDataTypeController {
 	@RequestMapping("dataTypeConvert")
 	public ModelAndView convertDataType(@Valid TestPojo pojo,Date birthday, int age) {
 		ModelAndView modelAndView = new ModelAndView();
-
 		modelAndView.setViewName("showData");
 		modelAndView.addObject("date", birthday);
+		return modelAndView;
+	}
+	
+	@RequestMapping("handworkValid")
+	public ModelAndView handworkValid(TestPojo pojo){
+		ModelAndView modelAndView = new ModelAndView();
+		ValidateResult result = ValidationUtils.validateEntity(pojo);
+		if(result.isHasErrors()){
+			modelAndView.addObject("error", result.getErrorMsgMap());
+		}
+		modelAndView.setViewName("showData");
+		modelAndView.addObject("date", pojo.getAddress());
 		return modelAndView;
 	}
 

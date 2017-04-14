@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pojo.Page;
 import com.service.QaReaderService;
 
-import io.swagger.annotations.Api;
+/*import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiOperation;*/
 
-@Api(produces="application/json",tags={"富表格api接口"})
+//@Api(produces="application/json",tags={"富表格api接口"})
 @Controller
 @RequestMapping("/")
 public class QaReadController {
@@ -33,8 +33,8 @@ public class QaReadController {
 	@Autowired
 	private QaReaderService qaReaderServie;
 	//swagger注解用于生产接口api信息
-	@ApiOperation(value="分页请求表格数据",httpMethod="POST",notes="分页请求表格数据")
-	@ApiImplicitParams({@ApiImplicitParam(name = "request", value = "http请求内容", required = true, dataType = "string"), @ApiImplicitParam(name = "response", value = "http响应", required = true, dataType = "string")})
+	//@ApiOperation(value="分页请求表格数据",httpMethod="POST",notes="分页请求表格数据")
+	//@ApiImplicitParams({@ApiImplicitParam(name = "request", value = "http请求内容", required = true, dataType = "string"), @ApiImplicitParam(name = "response", value = "http响应", required = true, dataType = "string")})
 	@ResponseBody
 	@RequestMapping(value = "listQaReader",produces = {"application/json"})
 	public Map<String, Object> listQaReader(HttpServletRequest request,HttpServletResponse response)throws IOException{

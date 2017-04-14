@@ -919,8 +919,8 @@
    	<!--dubbo:reference interface="wfm.dubboserver.service.TestService" id="testServiceImpl"/-->
 
 	<!-- 自动生产接口api配置 -->
-	<bean class="com.util.SwaggerConfig" id="swagger2Config"/>
-	<mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui555.html"/>
+	<!-- bean class="com.util.SwaggerConfig" id="swagger2Config"/>
+	<mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui555.html"/-->
    	<!-- mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/-->
-
+   
 </beans>

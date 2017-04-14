@@ -7,6 +7,7 @@
 <title>显示数据</title>
 </head>
 <body>
-${date}
+date:${date}<br>
+error:${error}
 </body>
 </html>
