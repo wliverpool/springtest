@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.sharding.TUserMapper">
+	<resultMap id="resultMap" type="com.pojo.sharding.TUser">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into t_user (user_id,name) values
+		(#{userId},#{name})
+	</insert>
+
+	<select id="findAll" resultType="java.util.Map">
+		select
+		<include refid="columnsName" />
+		from t_user a inner join t_order b on a.user_id=b.user_id
+	</select>
+
+	<sql id="columnsName">
+		a.user_id,a.name,b.order_id
+	</sql>
+	
+</mapper>  

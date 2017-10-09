@@ -6,6 +6,7 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -16,11 +17,14 @@
 	http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
-	http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis-1.0.xsd"
+	http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis-1.0.xsd
+	http://www.dangdang.com/schema/ddframe/rdb http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd"
 	default-lazy-init="true">
 
-	<bean
-		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"></bean>
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true"></property>
+		<property name="locations"  value="classpath*:*.properties"></property>
+	</bean>
 	<!-- 加载完PropertySourcesPlaceholderConfigurer,可以直接使用${PATH}来获取所在系统的PATH环境变量 -->
 
 	<!-- 国际化配置 -->
@@ -909,18 +913,19 @@
 	<!-- 调用dubbo的服务 -->
 	<!-- dubbo:application name="dubbo_consumer"></dubbo:application-->
    	<!-- 使用zookeeper注册中心暴露服务地址 -->  
-   	<!--dubbo:registry protocol="zookeeper" address="172.16.48.135:4181,172.16.48.135:4180,172.16.48.135:4182" check="false"></dubbo:registry--> 
+   	<!-- dubbo:registry protocol="zookeeper" address="172.16.48.138:4181,172.16.48.138:4180,172.16.48.138:4182" check="false"></dubbo:registry--> 
     <!-- 要引用的服务 -->  
     <!-- dubbo:reference 的一些属性的说明：
       1）interface调用的服务接口
       2）check 启动时检查提供者是否存在，true报错，false忽略
       3）registry 从指定注册中心注册获取服务列表，在多个注册中心时使用，值为<dubbo:registry>的id属性，多个注册中心ID用逗号分隔
       4）loadbalance 负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用 -->
-   	<!--dubbo:reference interface="wfm.dubboserver.service.TestService" id="testServiceImpl"/-->
+   	<!-- dubbo:reference interface="wfm.dubboserver.service.TestService" id="testServiceImpl"/>
+	<dubbo:reference id="genericService" interface="com.alibaba.dubbo.rpc.service.GenericService" generic="true" /-->
 
 	<!-- 自动生产接口api配置 -->
 	<!-- bean class="com.util.SwaggerConfig" id="swagger2Config"/>
 	<mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui555.html"/-->
    	<!-- mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/-->
-   
+   	
 </beans>

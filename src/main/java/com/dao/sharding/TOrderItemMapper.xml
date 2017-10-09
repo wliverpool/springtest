@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.sharding.TOrderItemMapper">
+	<resultMap id="resultMap" type="com.pojo.sharding.TOrderItem">
+		<id column="item_id" property="itemId" jdbcType="INTEGER" />
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="insert">
+		insert into t_order_item (item_id,order_id,user_id) values
+		(#{itemId},#{orderId},#{userId})
+	</insert>
+
+	<select id="findAll" resultMap="resultMap">
+		select
+		<include refid="columnsName" />
+		from t_order_items
+	</select>
+
+	<select id="findByOrderIds" resultMap="resultMap">
+		select
+		<include refid="columnsName" />
+		from t_order_item where order_id in (
+		<foreach collection="list" item="item" separator=",">
+			#{orderId}
+		</foreach>
+		)
+
+	</select>
+
+	<sql id="columnsName">
+		item_id,order_id,user_id
+	</sql>
+	
+</mapper>  
