@@ -11,5 +11,7 @@ public interface MybatisClobMapper {
 	public List<MybatisClob> getAllClobTest();
 
 	public MybatisClob getClobTestById(int id);
+	
+	public List<MybatisClob> selectPagingWhere();
 
 }

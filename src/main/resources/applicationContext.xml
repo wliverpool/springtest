@@ -613,10 +613,18 @@
 		<property name="jobRepository" ref="jobRepository" />
 	</bean>
 
+	<!-- Persist batch metadata in-memory -->
 	<bean id="jobRepository"
 		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
 		<property name="transactionManager" ref="jobTransactionManager" />
 	</bean>
+	
+	<!-- Persist batch metadata in database -->
+    <!-- bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="databaseType" value="MySQL"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean-->
 
 	<bean id="jobTransactionManager"
 		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager">
@@ -639,6 +647,56 @@
 
 	<bean id="world" class="com.job.WriteTasklet">
 		<property name="message" value=" World!"></property>
+	</bean>
+	
+	<!-- 带参数job,以及springbatch整合mybatis -->
+	<job:job id="useJobParam" incrementer="">
+		<job:validator ref="jobParametersValidator"></job:validator>
+		<job:step id="jobParam1">
+			<job:tasklet transaction-manager="jobTransactionManager">
+				<job:chunk reader="mybatisReader" writer="mybatisWriter" commit-interval="1"></job:chunk>
+				<!-- 监听器 -->
+				<job:listeners>
+					<job:listener ref="chunkListener"></job:listener>
+					<job:listener ref="itemReadListener"></job:listener>
+				</job:listeners>
+			</job:tasklet>
+			<job:listeners>
+				<job:listener ref="stepExecutionListener"></job:listener>
+			</job:listeners>
+		</job:step>
+	</job:job>
+	
+	<bean id="jobParametersValidator" class="org.springframework.batch.core.job.DefaultJobParametersValidator">        
+	    <property name="requiredKeys">        
+	        <set>    
+	            <value>paramId</value>
+	        </set>    
+	    </property>        
+	    <property name="optionalKeys">        
+	        <set>    
+	            <value>idMax</value>
+	        </set>    
+	    </property>        
+	</bean>  
+	
+	<!-- 通过mybatis读取数据 -->
+	<bean id="mybatisReader" class="org.mybatis.spring.batch.MyBatisPagingItemReader" scope="step">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+		<property name="pageSize" value="5"></property>
+		<property name="queryId" value="com.dao.mybatisauto.MybatisClobMapper.selectPagingWhere"></property>
+		<property name="parameterValues">
+			<map>
+				<!-- job级参数处理 -->
+				<entry key="id" value="#{jobParameters['paramId']}"></entry>
+				<entry key="idMax" value="#{jobParameters['idMax']}"></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="mybatisWriter" class="org.mybatis.spring.batch.MyBatisBatchItemWriter" scope="prototype">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+		<property name="statementId" value="com.dao.mybatisauto.MybatisClobMapper.insertClobTest"></property>
 	</bean>
 
 	<!-- 操作csv文件的job -->

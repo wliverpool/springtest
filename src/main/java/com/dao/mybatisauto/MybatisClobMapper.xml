@@ -21,4 +21,16 @@
 	<select id="getClobTestById" resultMap="clobResult" parameterType="int">
 		select a.id as id,a.title as title,a.bigtype as bigtype from clobtest a where a.id=#{id,jdbcType=INTEGER}
 	</select>
+	<select id="selectPagingWhere" resultMap="clobResult">
+		select a.id as id,a.title as title from clobtest a 
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id!=null">
+				<![CDATA[ and a.id>=#{id,jdbcType=INTEGER} ]]>
+			</if>
+			<if test="idMax!=null" >
+				<![CDATA[ and a.id<=#{idMax,jdbcType=INTEGER} ]]>
+			</if>
+		</trim> 
+		limit #{_skiprows},#{_pagesize}
+	</select>
 </mapper>

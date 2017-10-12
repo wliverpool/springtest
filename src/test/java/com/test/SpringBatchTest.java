@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobExecutionException;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -22,6 +23,7 @@ public class SpringBatchTest {
 	private Job xmlJob;
 	private Job fileJob;
 	private Job jdbcJob;
+	private Job useJobParam;
 
 	@Before
 	public void before() {
@@ -32,11 +34,21 @@ public class SpringBatchTest {
 		xmlJob = (Job) context.getBean("xmlFileReadAndWriterJob");
 		fileJob = (Job) context.getBean("fixedLengthJob");
 		jdbcJob = (Job) context.getBean("jdbcjob");
+		useJobParam = (Job) context.getBean("useJobParam");
 	}
 
 	@After
 	public void after() {
 		context.close();
+	}
+	
+	@Test
+	public void testUseJobParam()throws JobExecutionException{
+		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
+		jobParametersBuilder.addLong("paramId", 2L);
+		jobParametersBuilder.addLong("idMax", 8L);
+		JobExecution result = jobLauncher.run(useJobParam, jobParametersBuilder.toJobParameters());
+		System.out.println(result.toString());
 	}
 
 	@Test
