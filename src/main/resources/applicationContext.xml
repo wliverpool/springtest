@@ -570,16 +570,16 @@
 	<!-- spring mongodb -->
 	<!-- 配置mongo参数 ,产生的bean的id默认为mongo 主从mongodb的配置host="172.16.48.128" port="27017" 
 		credentials="root:wfmhbbwt@liverpool" -->
-	<mongo:mongo-client id="mongo" replica-set="172.16.48.128:40000" credentials="root:wfmhbbwt@liverpool" >
+	<!-- mongo:mongo-client id="mongo" replica-set="172.16.48.128:40000" credentials="root:wfmhbbwt@liverpool" >
 		<mongo:client-options connections-per-host="10"
 			read-preference="SECONDARY_PREFERRED"
 			threads-allowed-to-block-for-connection-multiplier="4"
 			connect-timeout="1500" max-wait-time="1500" socket-timeout="1500"
 			socket-keep-alive="true" write-concern="SAFE" />
-	</mongo:mongo-client>
+	</mongo:mongo-client-->
 
 	<!-- 配置mongofactory ,产生的bean的id默认为mongoDbFactory -->
-	<mongo:db-factory id="mongoDbFactory" dbname="liverpool"
+	<!-- mongo:db-factory id="mongoDbFactory" dbname="liverpool"
 		mongo-ref="mongo" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
@@ -592,7 +592,7 @@
 
 	<bean id="batchUpdate" class="com.dao.mongodb.BatchUpdateUtil">
 		<property name="template" ref="mongoTemplate" />
-	</bean>
+	</bean-->
 
 	<context:annotation-config />
 

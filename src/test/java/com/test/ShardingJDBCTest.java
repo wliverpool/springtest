@@ -1,4 +1,4 @@
-package com.test;
+/*package com.test;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,10 +23,10 @@ import com.util.ModuloTableShardingAlgorithm;
 
 public class ShardingJDBCTest {
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException {*/
 
 		// 数据源
-		Map<String, DataSource> dataSourceMap = new HashMap<>(2);
+		/*Map<String, DataSource> dataSourceMap = new HashMap<>(2);
 		dataSourceMap.put("sharding_order_0", createDataSource("sharding_order_0"));
 		dataSourceMap.put("sharding_order_1", createDataSource("sharding_order_1"));
 
@@ -35,12 +35,12 @@ public class ShardingJDBCTest {
 		// 分表分库的表，第一个参数是逻辑表名，第二个是实际表名，第三个是实际库
 		TableRule orderTableRule = TableRule.builder("t_order").actualTables(Arrays.asList("t_order_0", "t_order_1")).dataSourceRule(dataSourceRule).build();
 		TableRule orderItemTableRule = TableRule.builder("t_order_item").actualTables(Arrays.asList("t_order_item_0", "t_order_item_1")).dataSourceRule(dataSourceRule).build();
-		
+		*/
 		/**
 		 * DatabaseShardingStrategy 分库策略 参数一：根据哪个字段分库 参数二：分库路由函数
 		 * TableShardingStrategy 分表策略 参数一：根据哪个字段分表 参数二：分表路由函数
 		 * 
-		 */
+		 *//*
 		ShardingRule shardingRule = ShardingRule.builder()
 		        .dataSourceRule(dataSourceRule)
 		        .tableRules(Arrays.asList(orderTableRule, orderItemTableRule))
@@ -61,14 +61,14 @@ public class ShardingJDBCTest {
 				}
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * 创建数据源
 	 * 
 	 * @param dataSourceName
 	 * @return
-	 */
+	 *//*
 	private static DataSource createDataSource(String dataSourceName) {
 		BasicDataSource result = new BasicDataSource();
 		result.setDriverClassName(com.mysql.jdbc.Driver.class.getName());
@@ -79,3 +79,4 @@ public class ShardingJDBCTest {
 	}
 
 }
+*/

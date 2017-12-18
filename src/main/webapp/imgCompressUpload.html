@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">  
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+<title>测试图片压缩上传</title>
+</head>
+<body>
+	<form id="mainForm" name="mainForm" method="post" autocomplete="off"  action="/cxf/trade/saveInfo.htm" enctype="multipart/form-data" class="form-horizontal" role="form">
+		<input type="hidden" name="cityAdressValue" id="cityAdressValue">
+		<input type="hidden" name="provinceAdressValue" id="provinceAdressValue">
+		<input type="hidden" name="distirctAdressValue" id="distirctAdressValue">
+		<input type="hidden" name="userId" id="userId" value="860018">
+		<input type="hidden" name="cardNo" id="cardNo" value="9088889502095021363">
+		<div class="form-group" style="height: 50px;">
+                     <div class="col-md-10" style="width: 350px;color: red;">
+				非常抱歉，检测到您的账户未进行实名认证，请上传身份证信息！	                          
+			</div>
+                 </div>
+		<div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;margin-top: 10px;">
+                         <span class="mark" style="color: red;width: 70px;">*</span>真实姓名&nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;">
+                         <input class="ipt-reg iptbcor account" type="text" name="realName" id="realName" maxlength="15" placeholder="请输入您的姓名" style="width: 150px!important;height: 40px;border: 1px solid #ededed;line-height: 40px;">
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;margin-top: 10px;">
+                         <span class="mark" style="color: red;width: 70px;">*</span>身份证&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;">
+                         <input class="ipt-reg iptbcor account" type="text" name="idNumber" id="idNumber" maxlength="18" placeholder="请输入您的身份证" style="width: 150px!important;height: 40px;border: 1px solid #ededed;line-height: 40px;">
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;margin-top: 10px;">
+                         <span class="mark" style="color: red;">*</span>身份证正面&nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;">
+                         <input type="file" id="idPicFront" name="idPicFront" accept="image/*" style="width: 150px!important;height: 40px;border: 1px solid #ededed;line-height: 40px;">
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;margin-top: 10px;">
+                         <span class="mark" style="color: red;">*</span>身份证背面&nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;">
+                         <input type="file" id="idPicBack" name="idPicBack" accept="image/*" style="width: 150px!important;height: 40px;border: 1px solid #ededed;line-height: 40px;">
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;margin-top: 5px;">
+                         <span class="mark" style="color: red;">*</span>职业&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;margin-top: 5px;">
+                         <select name="occupation" id="occupation" style="width: 150px;border:1px solid #333333; overflow:hidden;">
+                         	<option>===请选择职业===</option>
+                         	<option value="1">各类专业,技术人员</option>
+                         	<option value="2">国家机关,党群组织,企事业单位的负责人</option>
+                         	<option value="3">办事人员和有关人员</option>
+                         	<option value="4">商业工作人员</option>
+                         	<option value="5">服务性工作人员</option>
+                         	<option value="6">农林牧渔劳动者</option>
+                         	<option value="7">生产工作,运输工作和部分体力劳动者</option>
+                         	<option value="8">不便分类的其他劳动者</option>
+                         </select>
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;">
+                         <span class="mark" style="color: red;width: 70px;">*</span>证件有效期
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;">
+                         <input type="text"  name="inputInvalidDate" id="idInvalidDate" />
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="float: left;">
+                         <span class="mark" style="color: red;width: 50px;">*</span>住址
+                     </label>
+                     <div class="col-md-10" style="width: 280px;margin-top: 5px;float: left;">
+                         <select name="addressListFirstAdress" id="addressListFirstAdress" class="selectone" style="display: inline;width: 65px;border:1px solid #333333; overflow:hidden;">
+							<option value="">请选择</option>
+			           		<option value="22222">22222</option>
+						</select>省
+						<select name="addressListSecondAdress" id="addressListSecondAdress" class="selectone" style="display: inline;width: 65px;border:1px solid #333333; overflow:hidden;">		
+			        		<option value="" selected>请选择</option>
+			        		<option value="333333">333333</option>
+			        	</select>市
+			        	<select name="addressListThirdAdress" id="addressListThirdAdress" class="selectone" style="display: inline;width: 65px;border:1px solid #333333; overflow:hidden;">
+			          		<option value="" selected>请选择</option>
+			          		<option value="44444">44444</option>
+			            </select>区
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="width: 50px;float: left;">
+                         &nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 150px;float: left;">
+                         <textarea name="addressDetailAdress" id="addressDetailAdress" cols="26" rows="4" placeholder="详细地址，路名或街道名称，门牌号。" style="width: 250px;height: 75px;resize: none;border: 1px solid #ededed;" ></textarea>
+                     </div>
+                 </div>
+                 <div class="form-group" style="height: 50px;">
+                     <label class="col-md-2 control-label" style="width: 30%">
+                         &nbsp;
+                     </label>
+                     <div class="col-md-10" style="width: 50%">
+                         <input type="button" name="test" id="submitRealName"  value="保存" style="background-color: #03a9f4;-webkit-appearance: button;display: inline-block;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;line-height: 1.42857143;text-align: center;white-space: nowrap;vertical-align: middle;touch-action: manipulation;cursor: pointer;user-select: none;background-image: none;border: 1px solid transparent;border-radius: 4px;">
+                     </div>
+                 </div>
+                 <canvas id="idPicFrontCanvas" style="display: none"></canvas> 
+                 <canvas id="idPicBackCanvas" style="display: none"></canvas>
+                 <input type="hidden" id="idPicFrontCompress" name="idPicFront"/>
+				 <input type="hidden" id="idPicBackCompress" name="idPicBack"/>
+	</form>
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+		var idPicFront = document.getElementById("idPicFront");
+		idPicFront.onchange = function() {
+			var idPicFrontFile = idPicFront.files[0];
+			var idPicFrontFileType = idPicFrontFile.type;
+			var idPicFrontReader = new FileReader();
+			idPicFrontReader.readAsDataURL(idPicFrontFile);
+			idPicFrontReader.onload = function (event) {
+                var result = event.target.result;
+                var img = new Image();
+                img.src = result;
+               	img.onload = function() {
+                       var canvas = document.getElementById("idPicFrontCanvas");     
+                       canvas.width = 400;  
+                       canvas.height = 400;  
+                       var ctx = canvas.getContext('2d');  
+                       ctx.drawImage(this, 0, 0, canvas.width, canvas.height);  
+                       var newImageData = "";
+                       newImageData = canvas.toDataURL(idPicFrontFileType, 1.2); 
+                       idFrontData = newImageData.replace("data:"+idPicFrontFileType+";base64,",'');
+                       $("#idPicFrontCompress").val(idFrontData);  
+                   }
+            };
+		};
+		var idPicBack = document.getElementById("idPicBack");
+		idPicBack.onchange = function() {
+			var idPicBackFile = idPicBack.files[0];
+			var idPicBackFileType = idPicBackFile.type;
+			var idPicBackReader = new FileReader();
+			idPicBackReader.readAsDataURL(idPicBackFile);
+			idPicBackReader.onload = function (event) {
+                var result = event.target.result;
+                var img = new Image();
+                img.src = result;
+               	img.onload = function() {
+                       var canvas = document.getElementById("idPicBackCanvas");     
+                       canvas.width = 350;  
+                       canvas.height = 350;  
+                       var ctx = canvas.getContext('2d');  
+                       ctx.drawImage(this, 0, 0, canvas.width, canvas.height);  
+                       var newImageData = "";
+                       if (result.length >= 1024 * 1024 * 1) {
+                    	   newImageData = canvas.toDataURL(idPicBackFileType, 1.2); 
+                       }else{
+                    	   newImageData = canvas.toDataURL(idPicBackFileType, 1.2); 
+                       }
+                       idBackData = newImageData.replace("data:"+idPicBackFileType+";base64,",'');
+                       $("#idPicBackCompress").val(idBackData);  
+                   }
+            };
+		};
+		var submitButton = document.getElementById("submitRealName");
+		submitButton.onclick = function () {
+			var realName = $("#realName").val();
+			var idNumber = $("#idNumber").val();
+			var occupation = $("#occupation").val();
+			var idPicFront = $("#idPicFront").val();
+			var idPicBack = $("#idPicBack").val();
+			var idInvalidDate = $("#idInvalidDate").val();
+			var addressListSecondAdressFlag=$("#addressListSecondAdress").val();
+			var addressListThirdAdressFlag=$("#addressListThirdAdress").val();
+			var addressDetailAdressFlag=$("#addressDetailAdress").val();
+			var addressListFirstAdressFlag=$("#addressListFirstAdress").val();
+			if(checkIsNotNull(idPicFront)&&checkIsNotNull(idPicBack)&&checkIsNotNull(realName)&&checkIsNotNull(idNumber)&&validateIDCard(idNumber)&&checkIsNotNull(occupation)&&checkIsNotNull(idInvalidDate)&&checkIsNotNull(addressListSecondAdressFlag)&&checkIsNotNull(addressListThirdAdressFlag)&&checkIsNotNull(addressDetailAdressFlag)&&checkIsNotNull(addressListFirstAdressFlag)){
+				$('#provinceAdressValue').val($('#addressListFirstAdress').find("option:selected").text());
+				$('#cityAdressValue').val($('#addressListSecondAdress').find("option:selected").text());
+				$('#distirctAdressValue').val($('#addressListThirdAdress').find("option:selected").text());
+				$.ajax({
+	                url: "/springtest/compress/pic",
+	                type: "POST",
+	                data: {
+	                	"userId":$("#userId").val(),
+	                	"cardNo":$("#cardNo").val(),
+	                	"realName":realName,
+	                	"idNumber":idNumber,
+	                	"realName":realName,
+	                	"idNumber":idNumber,
+	                	"occupation":occupation,
+	                	"inputInvalidDate":idInvalidDate,
+	                	"provinceAdressValue":$('#addressListFirstAdress').find("option:selected").text(),
+	                	"cityAdressValue":$('#addressListSecondAdress').find("option:selected").text(),
+	                	"distirctAdressValue":$('#addressListThirdAdress').find("option:selected").text(),
+	                	"addressListFirstAdress":addressListFirstAdressFlag,
+	                	"addressListSecondAdress":addressListSecondAdressFlag,
+	                	"addressListThirdAdress":addressListThirdAdressFlag,
+	                	"addressDetailAdress":addressDetailAdressFlag,
+	                    "idPicFront": $("#idPicFrontCompress").val(),
+						"idPicBack":  $("#idPicBackCompress").val()           
+	                },
+	                success: function(data) {
+	                	console.log(data);
+	                	console.log(data.success);
+	                	if(data.success==true){
+	                		window.location="/springtest/compress/toIndex";
+	                	}
+	                },
+	                error:function(boj,info){
+	                    alert("信息提交失败,请稍后再试");
+	                }
+	            });
+			}else{
+				if(!checkIsNotNull(realName)){
+					alert("请填写姓名");
+					return;
+				}
+				if((!checkIsNotNull(realName))||(!validateIDCard(idNumber))){
+					alert("请正确填写身份证");
+					return;
+				}
+				if(!checkIsNotNull(occupation)){
+					alert("请填写职业");
+					return;
+				}
+				if(!checkIsNotNull(idInvalidDate)){
+					alert("请填写身份证有效期");
+					return;
+				}
+				if((!checkIsNotNull(addressListSecondAdressFlag))||(!checkIsNotNull(addressListThirdAdressFlag))||(!checkIsNotNull(addressDetailAdressFlag))||(!checkIsNotNull(addressListFirstAdressFlag))){
+					alert("请填写住址");
+					return;
+				}
+				if( $("#idPicFront").val() == "" ){
+		            alert("请点击上传个人信息所在面身份证!");
+		            return;
+		        }
+		        if( $("#idPicBack").val() == "" ){
+		            alert("请点击上传个国徽图案面身份证!");
+		            return;
+		        }
+			}
+		}
+		function checkIsNotNull(value){
+			if(null==value||""==value||undefined==value||'undefined'==value){
+				return false;
+			}
+			return true;
+		}
+		
+		//身份证校验
+		function validateIDCard(str) {
+			var aIDNumber = str.split(""),
+				aWeight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2],
+				aValidateCode = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2],
+				count = 0;
+			if(aIDNumber.length === 18) {
+				for(var i = 0; i < 17; i++) {
+					count += aIDNumber[i] * aWeight[i];
+				}
+				return aValidateCode[count % 11] == str.charAt(17) ? true : false;
+			}
+			else if(aIDNumber.length === 15){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	</script>
+</body>
+</html>

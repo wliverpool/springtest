@@ -1,4 +1,4 @@
-package com.util;
+/*package com.util;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -11,7 +11,7 @@ import com.google.common.collect.Range;
  * 表分配策略
  * @author mittermeyer
  *
- */
+ *//*
 public final class ModuloTableShardingAlgorithm implements SingleKeyTableShardingAlgorithm<Integer> {
 
 	/**
@@ -27,7 +27,7 @@ public final class ModuloTableShardingAlgorithm implements SingleKeyTableShardin
 	 * 而：select * from t_order from t_order where order_id = 44 
 	 * 由于=后面的值跟2取模之后为0，根据规则都是匹配到t_order_表中以0结尾的表
 	 * 实际的sql则为：SELECT * FROM t_order_0 WHERE order_id = 44
-	 */
+	 *//*
 	public String doEqualSharding(final Collection<String> tableNames, final ShardingValue<Integer> shardingValue) {
 		for (String each : tableNames) {
 			if (each.endsWith(shardingValue.getValue() % 2 + "")) {
@@ -55,7 +55,7 @@ public final class ModuloTableShardingAlgorithm implements SingleKeyTableShardin
 	 * select * from t_order from t_order where order_id in (22,24,26) 
 	 * 由于in中的值跟2取模之后都是0，根据规则都是匹配到t_order_表中以0结尾的表，所以会变成实际的sql时也只会出现一条sql查询t_order_0表
 	 * 实际sql为： SELECT * FROM t_order_0 WHERE order_id IN (22,24,26)
-	 */
+	 *//*
 	public Collection<String> doInSharding(final Collection<String> tableNames,
 			final ShardingValue<Integer> shardingValue) {
 		Collection<String> result = new LinkedHashSet<>(tableNames.size());
@@ -79,7 +79,7 @@ public final class ModuloTableShardingAlgorithm implements SingleKeyTableShardin
 	 * 由于从between中的上界限值到下界限的值跟2取模之后即有1的值也有0的值，根据规则t_order_表中以0和1结尾的表都会匹配到，所以会变成实际的sql时只会出现2条sql，对两张表都会进行查询
 	 * 实际sql为： SELECT * FROM t_order_0 WHERE order_id BETWEEN 10 AND 20 
 	 * 			  SELECT * FROM t_order_1 WHERE order_id BETWEEN 10 AND 20
-	 */
+	 *//*
 	public Collection<String> doBetweenSharding(final Collection<String> tableNames,final ShardingValue<Integer> shardingValue) {
 		Collection<String> result = new LinkedHashSet<>(tableNames.size());
 		Range<Integer> range = (Range<Integer>) shardingValue.getValueRange();
@@ -92,4 +92,4 @@ public final class ModuloTableShardingAlgorithm implements SingleKeyTableShardin
 		}
 		return result;
 	}
-}
+}*/
