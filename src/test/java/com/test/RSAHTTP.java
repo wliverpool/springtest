@@ -55,6 +55,8 @@ public class RSAHTTP {
 	        //signMap.put("paymentInterface", ""); 
 	        signMap.put("bankCardNo", "32421231312432"); 
 	        signMap.put("serviceFee", "0.0"); 
+	        signMap.put("appId", "testapp");
+	        signMap.put("ipAddress", "127.0.0.1");
 	        /*signMap.put("txnRemark", ""); 
 	        signMap.put("accountNo", "");
 	        signMap.put("appId", "");
@@ -77,6 +79,8 @@ public class RSAHTTP {
 	        //nvps.add(new BasicNameValuePair("paymentInterface", "")); 
 	        nvps.add(new BasicNameValuePair("bankCardNo", "32421231312432")); 
 	        nvps.add(new BasicNameValuePair("serviceFee", "0.0")); 
+	        nvps.add(new BasicNameValuePair("appId", "testapp")); 
+	        nvps.add(new BasicNameValuePair("ipAddress", "127.0.0.1")); 
 	        /*nvps.add(new BasicNameValuePair("txnRemark", "")); 
 	        nvps.add(new BasicNameValuePair("accountNo", ""));  
 	        nvps.add(new BasicNameValuePair("appId", ""));  

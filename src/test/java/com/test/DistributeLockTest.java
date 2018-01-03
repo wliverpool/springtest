@@ -4,6 +4,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.lock.SimpleDistributedLock;
 
+/**
+ * 基于zookeeper的分布式锁
+ * @author mittermeyer
+ *
+ */
 public class DistributeLockTest {
 
 	public static void main(String[] args) {
