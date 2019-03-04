@@ -8,11 +8,11 @@ import com.util.RSASignature;
 public class RSATest {
 	
 	public static void main(String[] args) throws Exception {  
-        String filepath="/Users/mittermeyer/Documents/git/springtest";  
+        String filepath="/Users/wufuming/Documents/git/springtest";  
   
-        //RSAEncrypt.genKeyPair(filepath);  
+        RSAEncrypt.genKeyPair(filepath);  
           
-        Base64 base64 = new Base64();
+        /*Base64 base64 = new Base64();
         System.out.println("--------------公钥加密私钥解密过程-------------------");  
         String plainText="ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密"
         		+ "ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密ihep_公钥加密私钥解密"
@@ -54,7 +54,7 @@ public class RSATest {
         System.out.println("签名串："+signstr);  
           
         System.out.println("验签结果："+RSASignature.doCheck(content, signstr, RSAEncrypt.loadPublicKeyByFile(filepath)));  
-        System.out.println();  
+        System.out.println();  */
           
     }  
 

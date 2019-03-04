@@ -3,15 +3,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context" 
     xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb"
+    xmlns:rdb="http://shardingjdbc.io/schema/shardingjdbc/sharding"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans.xsd 
                         http://www.springframework.org/schema/tx 
                         http://www.springframework.org/schema/tx/spring-tx.xsd
                         http://www.springframework.org/schema/context 
                         http://www.springframework.org/schema/context/spring-context.xsd
-                        http://www.dangdang.com/schema/ddframe/rdb 
-                        http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd">
+                        http://shardingjdbc.io/schema/shardingjdbc/sharding 
+                        http://shardingjdbc.io/schema/shardingjdbc/sharding/sharding.xsd">
                         
 	<context:component-scan base-package="com.service.sharding" />
 	
@@ -78,8 +78,9 @@
         <property name="filters" value="stat" />  
     </bean>  
     
-    <rdb:strategy id="databaseStrategy" sharding-columns="user_id" algorithm-class="com.util.ModuloDatabaseShardingAlgorithm"/>
-    <rdb:strategy id="tableStrategy" sharding-columns="order_id" algorithm-class="com.util.ModuloTableShardingAlgorithm"/>
+    
+    <rdb:inline-strategy id="databaseStrategy" sharding-columns="user_id" algorithm-class="com.util.ModuloDatabaseShardingAlgorithm"/>
+    <rdb:inline-strategy id="tableStrategy" sharding-columns="order_id" algorithm-class="com.util.ModuloTableShardingAlgorithm"/>
 
     <rdb:data-source id="shardingDataSource">
         <rdb:sharding-rule data-sources="sharding_order_0,sharding_order_1" default-data-source="sharding_order_0">

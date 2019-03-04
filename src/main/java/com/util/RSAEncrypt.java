@@ -64,8 +64,10 @@ public class RSAEncrypt {
             FileWriter prifw = new FileWriter(filePath + "/privateKey.keystore");  
             BufferedWriter pubbw = new BufferedWriter(pubfw);  
             BufferedWriter pribw = new BufferedWriter(prifw);  
-            pubbw.write(publicKeyString);  
+            pubbw.write(publicKeyString);
+            System.out.println("publicKeyString:"+publicKeyString);
             pribw.write(privateKeyString);  
+            System.out.println("privateKeyString:"+privateKeyString);
             pubbw.flush();  
             pubbw.close();  
             pubfw.close();  

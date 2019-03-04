@@ -55,6 +55,23 @@ public class SpringRedisTemplateTest {
 	}
 
 	@Test
+	public void testBitMap(){
+		template.opsForValue().setBit("testbigmap", 199, true);
+		System.out.println(template.opsForValue().getBit("testbigmap", 200));
+		System.out.println(template.opsForValue().getBit("testbigmap", 199));
+		//统计bit位为1的总数
+		Long count = template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                long result = 0;
+                result = connection.bitCount("testbigmap".getBytes());
+                return result;
+            }
+        });
+		System.out.println("bitmap统计：" + count);
+	}
+	
+	@Test
 	public void testStringSet() {
 		stringTemplate.opsForValue().set("tempkey", "tempvalue");
 	}
