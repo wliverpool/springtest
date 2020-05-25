@@ -16,7 +16,7 @@
 		<springbatch.version>3.0.8.RELEASE</springbatch.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatisspring.version>1.2.2</mybatisspring.version>
-		<jackson.version>2.6.5</jackson.version>
+		<jackson.version>2.11.0</jackson.version>
 		<java.home>/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home</java.home>
 	</properties>
 
