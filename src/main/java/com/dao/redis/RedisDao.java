@@ -1,5 +1,6 @@
 package com.dao.redis;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -139,6 +141,87 @@ public class RedisDao {
 		}else {
 			return JSON.parseObject(value, clazz);
 		}
+	}
+	
+	/**
+	 * 获取名为key的bitmap中index个元素的值
+	 * @param key
+	 * @param index
+	 * @return
+	 */
+	public Boolean getBitMap(String key, Long index){
+		return template.execute(new RedisCallback<Boolean>() {
+			@Override
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				return connection.getBit(key.getBytes(Charset.forName("UTF-8")), index);
+			}
+		});
+	}
+	
+	/**
+	 * 设置名为key的bitmap中index个元素的值
+	 * @param key
+	 * @param index
+	 * @param tag
+	 * @return
+	 */
+	public Boolean setBitMap(String key, Long index, Boolean tag) {
+		return template.execute(new RedisCallback<Boolean>() {
+			@Override
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				return connection.setBit(key.getBytes(Charset.forName("UTF-8")), index, tag);
+			}
+		});
+	}
+	
+	/**
+	 * 统计bitmap中value为1的个数
+	 * @param key
+	 * @return
+	 */
+	public Long countBitMap(String key){
+		return template.execute(new RedisCallback<Long>() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				return connection.bitCount(key.getBytes(Charset.forName("UTF-8")));
+			}
+		});
+	}
+	
+	/**
+	 * 按照范围统计bitmap中value为1的个数
+	 * @param key
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public Long countBitMap(String key, long start, long end){
+		return template.execute(new RedisCallback<Long>() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				return connection.bitCount(key.getBytes(Charset.forName("UTF-8")), start,end);
+			}
+		});
+	}
+	
+	/**
+	 * 对任意个key求AND 、 OR 、 NOT 、 XOR操作,结果返回到saveKey中
+	 * @param op
+	 * @param saveKey
+	 * @param desKey
+	 * @return
+	 */
+	public Long bitOp(RedisStringCommands.BitOperation op, String saveKey, String... desKey) {
+	    byte[][] bytes = new byte[desKey.length][];
+	    for (int i = 0; i < desKey.length; i++) {
+	        bytes[i] = desKey[i].getBytes(Charset.forName("UTF-8"));
+	    }
+	    return template.execute(new RedisCallback<Long>() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				return connection.bitOp(op, saveKey.getBytes(Charset.forName("UTF-8")), bytes);
+			}
+	    });
 	}
 
 }
