@@ -14,7 +14,7 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<springbatch.version>3.0.8.RELEASE</springbatch.version>
-		<mybatis.version>3.2.8</mybatis.version>
+		<mybatis.version>3.5.6</mybatis.version>
 		<mybatisspring.version>1.2.2</mybatisspring.version>
 		<jackson.version>2.6.5</jackson.version>
 		<java.home>/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home</java.home>
