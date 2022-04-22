@@ -12,7 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-		<spring.version>4.2.5.RELEASE</spring.version>
+		<spring.version>5.3.19</spring.version>
 		<springbatch.version>3.0.8.RELEASE</springbatch.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatisspring.version>1.2.2</mybatisspring.version>
