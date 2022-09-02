@@ -20,6 +20,15 @@
 		<java.home>/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home</java.home>
 	</properties>
 
+
+	<repositories>
+		<repository>
+			<id>AsposeJavaAPI</id>
+			<name>Aspose Java API</name>
+			<url>https://repository.aspose.com/repo/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<!-- spring -->
 		<dependency>
@@ -147,12 +156,6 @@
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-			<version>1.10</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
@@ -207,12 +210,6 @@
 					<artifactId>tools</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.10-FINAL</version>
 		</dependency>
 
 		<dependency>
@@ -484,6 +481,10 @@
 					<groupId>org.jboss.netty</groupId>
 					<artifactId>netty</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>org.javassist</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -674,6 +675,10 @@
 					<groupId>org.apache.ant</groupId>
 					<artifactId>ant-launcher</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>xmlbeans</artifactId>
+					<groupId>org.apache.xmlbeans</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -721,9 +726,30 @@
                     <artifactId>axiom-impl</artifactId>
                     <groupId>org.apache.ws.commons.axiom</groupId>
                 </exclusion>
-            </exclusions>
+				<exclusion>
+					<artifactId>xmlbeans</artifactId>
+					<groupId>org.apache.xmlbeans</groupId>
+				</exclusion>
+			</exclusions>
         </dependency>
 
+		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-pdf</artifactId>
+			<version>21.8</version>
+		</dependency>
+		<!-- poi-ooxml是poi的升级版本-->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.20.0-GA</version>
+		</dependency>
 
 	</dependencies>
 

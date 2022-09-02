@@ -183,13 +183,13 @@ public class XSSFExcelAdapter implements IExcelAdapter<UserFile> {
 					XSSFCell cell = row.getCell(j);// 获取单元格对象
 					if (cell == null) {// 单元格为空设置cellStr为空串
 						cellStr = "";
-					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {// 对布尔值的处理
+					} /*else if (cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {// 对布尔值的处理
 						cellStr = String.valueOf(cell.getBooleanCellValue());
 					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {// 对数字值的处理
 						cellStr = cell.getNumericCellValue() + "";
 					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {// 对公式的处理
 						cellStr = cell.getCellFormula() + "";
-					} else {// 其余按照字符串处理
+					}*/ else {// 其余按照字符串处理
 						cellStr = cell.getStringCellValue();
 					}
 					// 下面按照数据出现位置封装到bean中

@@ -54,15 +54,15 @@ public class HSSFExcelAdapter implements IExcelAdapter<UserFile> {
 		HSSFCellStyle headerStyle = workbook2003.createCellStyle();
 		HSSFCellStyle cellStyle = workbook2003.createCellStyle();
 		// 设置垂直居中
-		headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		headerStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		//headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		//headerStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		// 设置边框
-		headerStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		//headerStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		//headerStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		//headerStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		//headerStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
 		// 字体加粗
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		//font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		// 设置长文本自动换行
 		headerStyle.setWrapText(true);
 		headerStyle.setFont(font);
@@ -179,13 +179,13 @@ public class HSSFExcelAdapter implements IExcelAdapter<UserFile> {
 					HSSFCell cell = row.getCell(j);// 获取单元格对象
 					if (cell == null) {// 单元格为空设置cellStr为空串
 						cellStr = "";
-					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {// 对布尔值的处理
+					} /*else if (cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {// 对布尔值的处理
 						cellStr = String.valueOf(cell.getBooleanCellValue());
 					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {// 对数字值的处理
 						cellStr = cell.getNumericCellValue() + "";
 					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {// 对公式的处理
 						cellStr = cell.getCellFormula() + "";
-					} else {// 其余按照字符串处理
+					} */else {// 其余按照字符串处理
 						cellStr = cell.getStringCellValue();
 					}
 					// 下面按照数据出现位置封装到bean中

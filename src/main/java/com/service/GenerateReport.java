@@ -97,24 +97,24 @@ public class GenerateReport {
 		sheet.setColumnWidth(4, 32 * 180);
 		// 单元格样式
 		HSSFCellStyle style = workbook.createCellStyle();
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		//style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		//style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		style.setWrapText(true);
-		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		//style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		//style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		//style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		//style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		// 加粗居中样式
 		HSSFFont font = workbook.createFont();
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		//font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle biStyle = workbook.createCellStyle();
 		biStyle.setFont(font);
-		biStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		biStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-		biStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		biStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		biStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		biStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		//biStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		//biStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		//biStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		//biStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		//biStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		//biStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		// 制作表头
 		HSSFRow header = sheet.createRow(0);
 		HSSFCell divisionHeader = header.createCell(0);
